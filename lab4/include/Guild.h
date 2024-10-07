@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "Mercenary.h"
-
+#include <vector>
 class Guild 
 {
 	private:
@@ -136,42 +136,84 @@ class Guild
 						break;
 			}
 		}
-		
-		void get_ideal_group()
-		{
-			if (size_mercenaries < 5) 
-			{
-				std::cout << "Недостаточно наемников для формирования группы." << std::endl;
-				return;
-			}
+		 
+		void get_ideal_group() {
+			std::vector<Mercenary*> ideal_group; // Идеальная группа
+			int max_cost = 1000; // Максимальная стоимость группы (можно изменить по желанию)
+			int total_power = 0; // Общая сила группы
+			int total_durability = 0; // Общая стойкость группы
+			int total_cost = 0; // Общая стоимость группы
+			int near_distance_count = 0; // Счетчик для близкой дистанции
+			int mid_distance_count = 0; // Счетчик для средней дистанции
 
-			int max_cost;
-			std::cout << "Введите вашу сумму: ";
-			std::cin >> max_cost;
+			for (int i = 0; i < size_mercenaries; i++) {
+				// Получаем указатель на наемника
+				Mercenary* merc = mercenaries[i];
 
-			int sum_power = 0;
-			int sum_durability = 0;
-			int sum_cost = 0;
-			size_group = 0; 
+				// Конкретизация указателя на персонажа для получения характеристик
+				int current_power = 0;
+				int current_durability = 0;
+				int current_distance = 0;
+				int current_cost = 0;
 
-			for (int i = 0; i < size_mercenaries; i++) 
-			{
-				Mercenary* mercenary = mercenaries[i];
-				sum_power += static_cast<Swordsman*>(mercenary->character)->Swordsman::get_power(); 
-				sum_durability += static_cast<Swordsman*>(mercenary->character)->Swordsman::get_durability(); 
-				sum_cost += static_cast<Swordsman*>(mercenary->character)->Swordsman::get_cost(); 
+				// Используем switch для правильного доступа к характеристикам
+				switch(merc->type) {
+					case 0: // Swordsman
+						current_power = static_cast<Swordsman*>(merc->character)->get_power();
+						current_durability = static_cast<Swordsman*>(merc->character)->get_durability();
+						current_distance = static_cast<Swordsman*>(merc->character)->get_distance();
+						current_cost = static_cast<Swordsman*>(merc->character)->get_cost();
+						break;
+					case 1: // Mage
+						current_power = static_cast<Mage*>(merc->character)->get_power();
+						current_durability = static_cast<Mage*>(merc->character)->get_durability();
+						current_distance = static_cast<Mage*>(merc->character)->get_distance();
+						current_cost = static_cast<Mage*>(merc->character)->get_cost();
+						break;
+					case 2: // Shooter
+						current_power = static_cast<Shooter*>(merc->character)->get_power();
+						current_durability = static_cast<Shooter*>(merc->character)->get_durability();
+						current_distance = static_cast<Shooter*>(merc->character)->get_distance();
+						current_cost = static_cast<Shooter*>(merc->character)->get_cost();
+						break;
+				}
 
-				set_add_mercenaries_group(mercenary);
+				// Проверяем, укладываемся ли мы в бюджет
+				if (total_cost + current_cost <= max_cost) {
+					// Добавляем наемника в группу
+					ideal_group.push_back(merc);
+					total_power += current_power;
+					total_durability += current_durability;
+					total_cost += current_cost; // Добавлено для подсчета общей стоимости
 
-				if (size_group >= 5 && sum_cost <= max_cost && sum_durability >= (sum_power / 2)) 
-				{
-					std::cout << "Идеальная группа сформирована:" << std::endl;
-					get_show_group();
-					return;
+					// Проверяем дистанции
+					if (current_distance == 1) {
+						near_distance_count++;
+					}
+					if (current_distance == 2) {
+						mid_distance_count++;
+					}
+				}
+
+				// Проверяем, соответствует ли группа критериям
+				if (ideal_group.size() >= 5 &&
+					total_durability >= 0.5 * total_power &&
+					near_distance_count >= 1 &&
+					mid_distance_count >= 1) {
+						// Группа соответствует критериям
+						break;
 				}
 			}
 
-			std::cout << "Не удалось сформировать идеальную группу в пределах заданной стоимости." << std::endl;
-		}
+			// Выводим идеальную группу
+			if (ideal_group.size() > 0) {
+				std::cout << "Идеальная группа:" << std::endl;
+				for (auto& merc : ideal_group) {
+					merc->get_mercenary_characteristic();
+				}
+			} else {
+				std::cout << "Не удалось сформировать идеальную группу." << std::endl;
+			}
+}	
 };
 #endif // GUILD_H	
