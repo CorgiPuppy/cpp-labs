@@ -199,7 +199,8 @@ class Guild
 		 *
 		 */
 	 
-		void get_ideal_group() {
+		void get_ideal_group() 
+		{
 			std::vector<Mercenary*> ideal_group; 
 
 			int max_cost; 
@@ -212,7 +213,8 @@ class Guild
 			int near_distance_count = 0; 
 			int mid_distance_count = 0;
 
-			for (int i = 0; i < size_mercenaries; i++) {
+			for (int i = 0; i < size_mercenaries; i++) 
+			{
 				Mercenary* mercenary = mercenaries[i];
 
 				int current_power = 0;
@@ -220,7 +222,8 @@ class Guild
 				int current_distance = 0;
 				int current_cost = 0;
 
-				switch(mercenary->type) {
+				switch(mercenary->type) 
+				{
 					case 0: 
 						current_power = static_cast<Swordsman*>(mercenary->character)->get_power();
 						current_durability = static_cast<Swordsman*>(mercenary->character)->get_durability();
@@ -243,7 +246,8 @@ class Guild
 						break;
 				}
 
-				if (total_cost + current_cost <= max_cost) {
+				if (total_cost + current_cost <= max_cost) 
+				{
 					ideal_group.push_back(mercenary);
 					total_power += current_power;
 					total_durability += current_durability;
@@ -263,7 +267,8 @@ class Guild
 						break;
 			}
 
-			if (ideal_group.size() > 0) {
+			if (ideal_group.size() >= 5) 
+			{
 				std::cout << "Идеальная группа:" << std::endl;
 				
 				for (Mercenary* mercenary : ideal_group)
@@ -271,6 +276,7 @@ class Guild
 			} 
 			else
 				std::cout << "Не удалось сформировать идеальную группу." << std::endl;
-}	
+		}	
 };
+
 #endif // GUILD_H	
