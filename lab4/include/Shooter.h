@@ -9,10 +9,10 @@ class Shooter
 		int cost;
 
 	public:
-		Shooter() :
-			power(Constants::power_shooter),
-			durability(Constants::durability_shooter),
-			distance(Constants::distance[1] + (rand() % (Constants::distance[2] - Constants::distance[1] + 1))),
+		Shooter(bool mid_range = false) :
+			power(mid_range ? Constants::power_mid_range_shooter : Constants::power_long_range_shooter),
+			durability(mid_range ? Constants::durability_mid_range_shooter : Constants::durability_shooter),
+			distance(mid_range ? Constants::distance[1] : Constants::distance[2]),
 			cost(Constants::cost_1 + (rand() % (Constants::cost_2 - Constants::cost_1 + 1)))
 			{}
 

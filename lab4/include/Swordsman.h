@@ -9,9 +9,9 @@ class Swordsman
 		int cost;
 	
 	public:
-		Swordsman() :
-			power(Constants::power_swordsman), 
-			durability(Constants::durability_swordsman),
+		Swordsman(bool tank = false) :
+			power(tank ? Constants::power_strong_swordsman : Constants::power_swordsman), 
+			durability(tank ? Constants::durability_tank_swordsman : Constants::durability_swordsman),
 			distance(Constants::distance[0]),
 			cost(Constants::cost_1 + (rand() % (Constants::cost_2 - Constants::cost_1 + 1)))	
 		{}

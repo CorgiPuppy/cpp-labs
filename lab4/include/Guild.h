@@ -2,8 +2,10 @@
 #define GUILD_H
 
 #include <iostream>
-#include "Mercenary.h"
 #include <vector>
+
+#include "Mercenary.h"
+
 class Guild 
 {
 	private:
@@ -88,19 +90,31 @@ class Guild
 
 
 		void get_random_mercenaries() {
+			set_add_mercenaries(new Mercenary(new Swordsman(true), 0)); // Танк
+			set_add_mercenaries(new Mercenary(new Swordsman(false), 0)); // Обычный мечник
+			set_add_mercenaries(new Mercenary(new Mage(1), 1)); // Маг средней дальности
+			set_add_mercenaries(new Mercenary(new Mage(2), 1)); // Дальнобойный маг
+			set_add_mercenaries(new Mercenary(new Shooter(true), 2)); // Средний стрелок
+
 			for (int i = 0; i < Constants::capacity; i++) 
 			{ 
-				int type = rand() % 3;
+				int type = rand() % 5;
 
 				switch(type)
 				{
 					case(0):
 						set_add_mercenaries(new Mercenary(new Swordsman(), 0));
 					case(1):
-						set_add_mercenaries(new Mercenary(new Mage(), 1));
+						set_add_mercenaries(new Mercenary(new Swordsman(false), 0));
 				
 					case(2):
-						set_add_mercenaries(new Mercenary(new Shooter(), 2));
+						set_add_mercenaries(new Mercenary(new Mage(1), 1));
+
+					case(3):
+						set_add_mercenaries(new Mercenary(new Mage(2), 1));
+
+					case(4):
+						set_add_mercenaries(new Mercenary(new Shooter(true), 2));
 				}
 			}
 		}

@@ -9,10 +9,25 @@ class Mage
 		int cost;
 	
 	public:
-		Mage() {
-			power = Constants::power_mage; 
-			durability = Constants::durability_mage; 
-			distance = Constants::distance[rand() % 3]; 
+		Mage(int type = 0) {
+			switch(type)
+			{
+				case(1):
+					power = Constants::power_mid_range_mage; 
+					durability = Constants::durability_mage; 
+					distance = Constants::distance[1]; 
+
+				case(2):
+					power = Constants::power_long_range_mage; 
+					durability = Constants::durability_mage; 
+					distance = Constants::distance[2]; 
+
+				case(3):
+					power = Constants::power_mage; 
+					durability = Constants::durability_mage; 
+					distance = Constants::distance[rand() % 3]; 
+			}
+
 			cost = Constants::cost_1 + (rand() % (Constants::cost_2 - Constants::cost_1 + 1));
 		}	
 		
