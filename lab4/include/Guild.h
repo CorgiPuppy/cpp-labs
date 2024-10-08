@@ -217,34 +217,10 @@ class Guild
 			{
 				Mercenary* mercenary = mercenaries[i];
 
-				int current_power = 0;
-				int current_durability = 0;
-				int current_distance = 0;
-				int current_cost = 0;
-
-				switch(mercenary->type) 
-				{
-					case 0: 
-						current_power = static_cast<Swordsman*>(mercenary->character)->get_power();
-						current_durability = static_cast<Swordsman*>(mercenary->character)->get_durability();
-						current_distance = static_cast<Swordsman*>(mercenary->character)->get_distance();
-						current_cost = static_cast<Swordsman*>(mercenary->character)->get_cost();
-						break;
-
-					case 1: 
-						current_power = static_cast<Mage*>(mercenary->character)->get_power();
-						current_durability = static_cast<Mage*>(mercenary->character)->get_durability();
-						current_distance = static_cast<Mage*>(mercenary->character)->get_distance();
-						current_cost = static_cast<Mage*>(mercenary->character)->get_cost();
-						break;
-
-					case 2: 
-						current_power = static_cast<Shooter*>(mercenary->character)->get_power();
-						current_durability = static_cast<Shooter*>(mercenary->character)->get_durability();
-						current_distance = static_cast<Shooter*>(mercenary->character)->get_distance();
-						current_cost = static_cast<Shooter*>(mercenary->character)->get_cost();
-						break;
-				}
+				int current_power = mercenary->get_power();
+				int current_durability = mercenary->get_durability();
+				int current_distance = mercenary->get_distance();
+				int current_cost = mercenary->get_cost();
 
 				if (sum_cost + current_cost <= max_cost) 
 				{
