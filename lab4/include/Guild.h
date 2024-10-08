@@ -207,9 +207,9 @@ class Guild
 			std::cout << "Введите, сколько у вас денег: ";
 			std::cin >> max_cost;
 
-			int total_power = 0; 
-			int total_durability = 0; 
-			int total_cost = 0; 
+			int sum_power = 0; 
+			int sum_durability = 0; 
+			int sum_cost = 0; 
 			int near_distance_count = 0; 
 			int mid_distance_count = 0;
 
@@ -246,12 +246,12 @@ class Guild
 						break;
 				}
 
-				if (total_cost + current_cost <= max_cost) 
+				if (sum_cost + current_cost <= max_cost) 
 				{
 					ideal_group.push_back(mercenary);
-					total_power += current_power;
-					total_durability += current_durability;
-					total_cost += current_cost;
+					sum_power += current_power;
+					sum_durability += current_durability;
+					sum_cost += current_cost;
 
 					if (current_distance == 1)
 						near_distance_count++;
@@ -261,7 +261,7 @@ class Guild
 				}
 
 				if (ideal_group.size() >= 5 &&
-					total_durability >= 0.5 * total_power &&
+					sum_durability >= 0.5 * sum_power &&
 					near_distance_count >= 1 &&
 					mid_distance_count >= 1) 
 						break;
