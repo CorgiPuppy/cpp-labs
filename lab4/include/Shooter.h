@@ -16,6 +16,11 @@ class Shooter
 			cost(Constants::cost_1 + (rand() % (Constants::cost_2 - Constants::cost_1 + 1)))
 			{}
 
+		/*
+		 * Получение характеристик стрелка
+		 *
+		 */
+
 		void get_charaсteristic()
 		{
 			std::cout << "\t\tСтрелок:" << std::endl;
@@ -25,11 +30,35 @@ class Shooter
 			std::cout << "\t\t\tСтоимость - " << cost << ";" << std::endl;
 		}
 		
+		/*
+		 * Получение силы стрелка
+		 *
+		 * @return возвращает силу стрелка
+		 */
+
 		int get_power(void) { return this->power; }
+
+		/*
+		 * Получение стойкости стрелка
+		 *
+		 * @return возвращает стойкость стрелка
+		 */
 
 		int get_durability(void) { return this->durability; }
 
+		/*
+		 * Получение дистанции стрелка
+		 *
+		 * @return возвращает дистанцию стрелка
+		 */
+
 		int get_distance(void) { return this->distance; }
+
+		/*
+		 * Получение стоимость стрелка
+		 *
+		 * @return возвращает стоимость стрелка
+		 */
 
 		int get_cost(void) { return this->cost; }
 };

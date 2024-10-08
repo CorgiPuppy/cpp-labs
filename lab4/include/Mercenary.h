@@ -10,6 +10,11 @@ class Mercenary
 		
 		Mercenary(void *c, int t) : character(c), type(t) {}	
 
+		/*
+		 * Получение характеристик определенного наемника
+		 *
+		 */
+		 
 		void get_mercenary_characteristic()
 		{
 			switch(type)
