@@ -45,7 +45,6 @@ int main()
 string random_string() 
 {
 	string temp_string;
-	// temp_string.reserve(LEN);
 
 	for (int i = 0; i < LEN; i++
 		temp_string += alphabet[rand() % sizeof(alphabet)];

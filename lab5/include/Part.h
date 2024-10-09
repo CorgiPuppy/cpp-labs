@@ -11,27 +11,40 @@ class Part
 		int deterioration_degree;
 
 	public:
-		Part() : replacement_cost(), single_repair_cost(), repair_time(), service_life(), deterioration_degree() {};
+		Part
+		(
+			double replacement_cost,
+			double single_repair_cost,
+			double repair_time,
+			double service_life,
+			double deterioration_degree
+		) : 
+			this->replacement_cost(replacemt_cost), 
+			this->single_repair_cost(single_repair_cost),
+			this->repair_time(repair_time),
+			this->service_life(service_life),
+			this->deterioration_degree(deterioration_degree)
+		{}
 
-		void get_characteristic() const
+		virtual ~Part() {}
+
+		virtual void working(double intensity) 
 		{
-				
-		}
+			deterioration_degree += intensity;
 
-		void breakdown_detection() 
-		{
-			if (service_life == 0)
-			{
-				std::cout << "Срок службы запчасти истёк" << std::endl;
-				std::cout << "Степень изношенности: " << deteriorations_degree << std::endl;
-			}
+			if (deterioration_degree >= service_life)
+				deterioration_degree = service_life;
 		}
+		
+		double get_replacement_cost() const { return replacement_cost; }
 
-		void working() 
-		{
-			
-		}
+		double get_single_repair_cost() const { return repair_single_cost; {
 
+		double get_repair_time() const { return repair_time; }
+
+		double service_life() const { return service_life; }
+
+		double deterioration_degree() const { return deterioration_degree; }
 };
 
 #endif
