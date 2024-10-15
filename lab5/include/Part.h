@@ -21,7 +21,8 @@ class Part
 			replacement_cost(replacement_cost), 
 			single_repair_cost(single_repair_cost),
 			repair_time(repair_time),
-			service_life(service_life)
+			service_life(service_life),
+			deterioration_degree(0)
 		{}
 
 		virtual ~Part() {}
