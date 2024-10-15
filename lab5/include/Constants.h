@@ -8,7 +8,8 @@ namespace Constants
 	const int hours = 12;
 
 	const int max_intensity = 100;
-	const int amount_of_machine_tools = 1;
+	const int amount_of_parts = 4;
+	const int amount_of_machine_tools = 10;
 	const int replacement_hours = 4;
 
 	const int replacement_cost_shaft = 400;

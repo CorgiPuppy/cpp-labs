@@ -9,8 +9,7 @@
 class MachineTool 
 {
 	private:
-		Part** parts;
-		int amount_of_parts;
+		Part* parts[Constants::amount_of_parts];
 		int breaking_time;
 		int repair_cost;
 		int breakages;
@@ -31,16 +30,27 @@ class MachineTool
 			repair_cost += old_part->get_replacement_cost();
 			breaking_time += Constants::replacement_hours;	
 			amount_of_part_replacements++;
+
 			delete old_part;
 
-			if (static_cast<Shaft*>(old_part))
-				parts[index_part] = new Shaft();
-			else if (static_cast<ElectricMotor*>(old_part))
-				parts[index_part] = new ElectricMotor();
-			else if (static_cast<ControlPanel*>(old_part))
-				parts[index_part] = new ControlPanel();
-			else if (static_cast<CuttingHead*>(old_part))
-				parts[index_part] = new CuttingHead();
+			switch (index_part)
+			{
+				case 0: 
+					parts[index_part] = new Shaft();
+					break;
+				
+				case 1:
+					parts[index_part] = new ElectricMotor();
+					break;
+
+				case 2:
+					parts[index_part] = new ControlPanel();
+					break;
+
+				case 3:
+					parts[index_part] = new CuttingHead();
+					break;
+			}
 
 			individual_breakages[index_machine]++;
 		}
@@ -51,23 +61,24 @@ class MachineTool
 			repair_cost(0),
 			breaking_time(0),
 			breakages(0),
-			parts(nullptr),
-			amount_of_parts(0),
 			amount_of_part_replacements(0),
 			sum_breaking_time(0)
 		{
+			parts[0] = new Shaft();
+			parts[1] = new ElectricMotor();
+			parts[2] = new ControlPanel();
+			parts[3] = new CuttingHead();
+
 			for (int i = 0; i < Constants::amount_of_machine_tools; i++)
 				individual_breakages[i] = 0;
 		}
 
 		~MachineTool() 
 		{
-			for (int i = 0; i < amount_of_parts; i++)
+			for (int i = 0; i < Constants::amount_of_parts; i++)
 				delete parts[i];
-
-			delete [] parts;
 		}
-
+/*
 		void add_part(Part* part)
 		{
 			Part** temp_parts = new Part*[amount_of_parts + 1];
@@ -81,16 +92,17 @@ class MachineTool
 			
 			amount_of_parts++;
 		}
-
+*/
 		void operating(int intensity, int index_machine)
 		{
 			for (int day = 0; day < Constants::days; day++)
 			{
 				for (int hour = 0; hour < Constants::hours; hour++)
 				{
-					for (int i = 0; i < amount_of_parts; i++)
+					for (int i = 0; i < Constants::amount_of_parts; i++)
 					{
 						parts[i]->working(intensity);
+
 						if (parts[i]->breaking())
 						{
 							set_breaking(parts[i]);
@@ -113,6 +125,14 @@ class MachineTool
 		int get_amount_of_part_replacements() const { return amount_of_part_replacements; }
 
 		int get_individual_breakage(int index) const { return individual_breakages[index]; }
+
+		friend void print_parts(MachineTool& mt)
+		{
+			std::cout << std::endl << "Запчасти в станке:" << std::endl;
+
+			for (int i = 0; i < Constants::amount_of_parts; i++)
+				std::cout << *mt.parts[i] << std::endl; 
+		}
 };
 
 #endif

@@ -51,7 +51,7 @@ class Part
 
 		friend std::ostream& operator<< (std::ostream& os, const Part& p)
 		{
-			return os << "Part { replacement_cost - " << p.replacement_cost << "," << " single_repair_cost - " << p.single_repair_cost << "," << "repair_time - " << p.repair_time << "," << "service_life - " << p.service_life << "," << "deterioration_degree - " << p.deterioration_degree << "}";
+			return os << "Запчасть" << std::endl << "{" << std::endl << "\tСтоимость замены - " << p.replacement_cost << "," << std::endl << "\tСтоимость однократной починки - " << p.single_repair_cost << "," << std::endl << "\tВремя починки - " << p.repair_time << "," << std::endl << "\tСрок службы - " << p.service_life << std::endl << "}";
 		}
 };
 
