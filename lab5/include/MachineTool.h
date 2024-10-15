@@ -28,7 +28,8 @@ class MachineTool
 		{
 			Part* old_part = parts[index];
 			repair_cost += old_part->get_replacement_cost();
-			breaking_time += 4;
+			breaking_time += 4;	
+			amount_of_part_replacements++;
 			delete old_part;
 
 			if (static_cast<Shaft*>(old_part))
@@ -99,6 +100,8 @@ class MachineTool
 		int get_breaking_time() const { return breaking_time; }
 
 		int get_sum_breaking_time() const { return sum_breaking_time; }
+		
+		int get_amount_of_part_replacements() const { return amount_of_part_replacements; }
 };
 
 #endif
