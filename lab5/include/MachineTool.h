@@ -16,6 +16,7 @@ class MachineTool
 		int breakages;
 		int amount_of_part_replacements;
 		int sum_breaking_time;
+		int individual_breakages[10];
 
 		void set_breaking(Part* part)
 		{
@@ -24,22 +25,24 @@ class MachineTool
 			breakages++;
 		}
 
-		void replacing_part(int index)
+		void replacing_part(int index_part, int index_machine)
 		{
-			Part* old_part = parts[index];
+			Part* old_part = parts[index_part];
 			repair_cost += old_part->get_replacement_cost();
 			breaking_time += 4;	
 			amount_of_part_replacements++;
 			delete old_part;
 
 			if (static_cast<Shaft*>(old_part))
-				parts[index] = new Shaft();
+				parts[index_part] = new Shaft();
 			else if (static_cast<ElectricMotor*>(old_part))
-				parts[index] = new ElectricMotor();
+				parts[index_part] = new ElectricMotor();
 			else if (static_cast<ControlPanel*>(old_part))
-				parts[index] = new ControlPanel();
+				parts[index_part] = new ControlPanel();
 			else if (static_cast<CuttingHead*>(old_part))
-				parts[index] = new CuttingHead();
+				parts[index_part] = new CuttingHead();
+
+			individual_breakages[index_machine]++;
 		}
 
 	public:
@@ -52,7 +55,10 @@ class MachineTool
 			amount_of_parts(0),
 			amount_of_part_replacements(0),
 			sum_breaking_time(0)
-		{}
+		{
+			for (int i = 0; i < 10; i++)
+				individual_breakages[i] = 0;
+		}
 
 		~MachineTool() 
 		{
@@ -76,18 +82,21 @@ class MachineTool
 			amount_of_parts++;
 		}
 
-		void operating(int intensity, int hours)
+		void operating(int intensity, int index_machine)
 		{
-			for (int hour = 0; hour < hours; hour++)
+			for (int day = 0; day < Constants::days; day++)
 			{
-				for (int i = 0; i < amount_of_parts; i++)
+				for (int hour = 0; hour < Constants::hours; hour++)
 				{
-					parts[i]->working(intensity);
-					if (parts[i]->breaking())
+					for (int i = 0; i < amount_of_parts; i++)
 					{
-						set_breaking(parts[i]);
-						sum_breaking_time += parts[i]->get_repair_time();
-						replacing_part(i);
+						parts[i]->working(intensity);
+						if (parts[i]->breaking())
+						{
+							set_breaking(parts[i]);
+							sum_breaking_time += parts[i]->get_repair_time();
+							replacing_part(i, index_machine);
+						}
 					}
 				}
 			}
@@ -102,6 +111,8 @@ class MachineTool
 		int get_sum_breaking_time() const { return sum_breaking_time; }
 		
 		int get_amount_of_part_replacements() const { return amount_of_part_replacements; }
+
+		int get_individual_breakage(int index) const { return individual_breakages[index]; }
 };
 
 #endif

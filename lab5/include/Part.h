@@ -1,6 +1,8 @@
 #ifndef PART_H
 #define PART_H
 
+#include "Constants.h"
+
 class Part
 {
 	protected:
@@ -47,17 +49,9 @@ class Part
 
 		int get_deterioration_degree() const { return deterioration_degree; }
 
-		friend std::ostream& operator << (std::ostream& os, const Part& part)
+		friend std::ostream& operator << (std::ostream& os, const Part& p)
 		{
-			os << "Part " << std::endl;
-			os << "{" << std::endl;
-			os << "\treplacement_cost - " << part.replacement_cost << ";" << std::endl;
-			os << "\tsingle_repair_cost - " << part.single_repair_cost << ";" << std::endl;
-			os << "\trepair_time - " << part.repair_time << ";" << std::endl;
-			os << "\tservice_life - " << part.service_life << ";" << std::endl;
-			os << "\tdeterioration_degree - " << part.deterioration_degree << ";" << std::endl;
-			os << "}" << std::endl;	
-			return os;
+			return os << "Part { replacement_cost - " << p.replacement_cost << ";" << " single_repair_cost - " << p.single_repair_cost << ";" << "repair_time - " << p.repair_time << ";" << "service_life - " << p.service_life << ";" << "deterioration_degree - " << p.deterioration_degree << ";" << "}";
 		}
 };
 

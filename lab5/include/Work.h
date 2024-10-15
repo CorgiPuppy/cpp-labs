@@ -12,6 +12,8 @@ class Work
 		int max_sum_breaking_time = 0;
 		int sum_amount_of_part_replacements = 0;
 		int sum_repair_cost_per_machine[10];
+		int breakages_per_machine[10]; 
+
 	public:
 		void simulating()
 		{
@@ -29,7 +31,7 @@ class Work
 
 					int intensity = rand() % 100 + 1;
 
-					machine.operating(intensity, 12);
+					machine.operating(intensity, i);
 
 					sum_repair_cost += machine.get_repair_cost();
 					sum_amount_of_breakages += machine.get_amount_of_breakages();
@@ -37,6 +39,7 @@ class Work
 					max_sum_breaking_time = (max_sum_breaking_time > machine.get_sum_breaking_time()) ? max_sum_breaking_time : machine.get_sum_breaking_time();
 					sum_amount_of_part_replacements += machine.get_amount_of_part_replacements();
 					sum_repair_cost_per_machine[i] = machine.get_repair_cost();
+					breakages_per_machine[i] = machine.get_individual_breakage(i);	
 				}
 			}
 		}
@@ -45,9 +48,13 @@ class Work
 		{
 			std::cout << "Количество заменяемых запчастей - " << sum_amount_of_part_replacements << " запчастей" << std::endl;
 
-			std::cout << "Стоимость ремонта каждого станка - " << " денег" << std::endl;
+			std::cout << "Стоимость ремонта каждого станка:" << std::endl;
 			for (int i = 0; i < 10; i++)
 				std::cout << "\tСтанок " << i + 1 << " - " << sum_repair_cost_per_machine[i] << " денег" << std::endl;
+			
+			std::cout << "Количество поломок каждого станка:" << std::endl;
+			for (int i = 0; i < 10; i++)
+				std::cout << "\tСтанок " << i + 1 << " - " << breakages_per_machine[i] << " поломок" << std::endl;
 
 			std::cout << "Количество поломок всех станков - " << sum_amount_of_breakages << " поломок" << std::endl;
 
