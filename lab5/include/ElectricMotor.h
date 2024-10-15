@@ -19,10 +19,12 @@ class ElectricMotor : public Part
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const ElectricMotor& em)
-		{
-			return os << "ElectricMotor " << static_cast<const Part&>(em);
-		}
+		friend std::ostream& operator << (std::ostream& os, const ElectricMotor& em);
 };
+
+std::ostream& operator << (std::ostream& os, const ElectricMotor& em)
+{
+	return os << "ElectricMotor " << static_cast<const Part&>(em);
+}
 
 #endif

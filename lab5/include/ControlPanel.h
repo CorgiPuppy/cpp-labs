@@ -19,10 +19,12 @@ class ControlPanel : public Part
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const ControlPanel& cp)
-		{
-			return os << "ControlPanel " << static_cast<const Part&>(cp);
-		}
+		friend std::ostream& operator << (std::ostream& os, const ControlPanel& cp);
 };
+
+std::ostream& operator << (std::ostream& os, const ControlPanel& cp)
+{
+	return os << "ControlPanel " << static_cast<const Part&>(cp);
+}
 
 #endif

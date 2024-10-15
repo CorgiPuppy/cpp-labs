@@ -13,10 +13,13 @@ class Shaft : public Part
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const Shaft& s)
-		{
-			return os << "Shaft " << static_cast<const Part&>(s);
-		}
+		friend std::ostream& operator << (std::ostream& os, const Shaft& s);
 };
+
+std::ostream& operator << (std::ostream& os, const Shaft& s)
+{
+	return os << "Shaft " << static_cast<const Part&>(s);
+}
+
 
 #endif

@@ -21,7 +21,6 @@ class MachineTool
 		{
 			repair_cost += part->get_single_repair_cost();
 			breaking_time += part->get_repair_time();
-			breakages++;
 		}
 
 		void replacing_part(int index_part, int index_machine)
@@ -30,6 +29,8 @@ class MachineTool
 			repair_cost += old_part->get_replacement_cost();
 			breaking_time += Constants::replacement_hours;	
 			amount_of_part_replacements++;
+
+			individual_breakages[index_machine]++;
 
 			delete old_part;
 
@@ -51,8 +52,6 @@ class MachineTool
 					parts[index_part] = new CuttingHead();
 					break;
 			}
-
-			individual_breakages[index_machine]++;
 		}
 
 	public:
@@ -107,6 +106,8 @@ class MachineTool
 						{
 							set_breaking(parts[i]);
 							sum_breaking_time += parts[i]->get_repair_time();
+
+							breakages++;
 							replacing_part(i, index_machine);
 						}
 					}
@@ -126,13 +127,15 @@ class MachineTool
 
 		int get_individual_breakage(int index) const { return individual_breakages[index]; }
 
-		friend void print_parts(MachineTool& mt)
-		{
-			std::cout << std::endl << "Запчасти в станке:" << std::endl;
-
-			for (int i = 0; i < Constants::amount_of_parts; i++)
-				std::cout << *mt.parts[i] << std::endl; 
-		}
+		friend void print_parts(MachineTool& mt);
 };
+
+void print_parts(MachineTool& mt)
+{
+	std::cout << std::endl << "Запчасти в станке:" << std::endl;
+
+	for (int i = 0; i < Constants::amount_of_parts; i++)
+		std::cout << *mt.parts[i] << std::endl; 
+}
 
 #endif

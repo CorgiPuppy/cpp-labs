@@ -19,11 +19,12 @@ class CuttingHead : public Part
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const CuttingHead& ch)
-		{
-			os << "CuttingHead " << static_cast<const Part&>(ch);
-			return os;
-		}
+		friend std::ostream& operator << (std::ostream& os, const CuttingHead& ch);
 };
 
+std::ostream& operator << (std::ostream& os, const CuttingHead& ch)
+{
+	os << "CuttingHead " << static_cast<const Part&>(ch);
+	return os;
+}
 #endif
