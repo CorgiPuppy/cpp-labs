@@ -7,6 +7,10 @@ namespace Constants
 	const int days = 30;
 	const int hours = 12;
 
+	const int max_intensity = 100;
+	const int amount_of_machine_tools = 1;
+	const int replacement_hours = 4;
+
 	const int replacement_cost_shaft = 400;
 	const int repair_cost_shaft = 300;
 	const int repair_time_shaft = 2;
