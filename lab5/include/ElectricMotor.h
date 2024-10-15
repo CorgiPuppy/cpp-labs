@@ -6,17 +6,22 @@
 class ElectricMotor : public Part
 {
 	public:
-		ElectricMotor() : Part(1500, 300, 2, 300) {}
+		ElectricMotor() : Part
+		(
+			Constants::replacement_cost_electric_motor, 
+			Constants::repair_cost_electric_motor,
+			Constants::repair_time_electric_motor,
+			Constants::service_life_electric_motor
+		) {}
 
 		bool breaking() const override
 		{
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const ElectricMotor& electricmotor)
+		friend std::ostream& operator << (std::ostream& os, const ElectricMotor& em)
 		{
-			os << "ElectricMotor " << static_cast<const Part&>(electricmotor);
-			return os;
+			return os << "ElectricMotor " << static_cast<const Part&>(em);
 		}
 };
 

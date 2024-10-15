@@ -6,16 +6,22 @@
 class CuttingHead : public Part
 {
 	public:
-		CuttingHead() : Part(1200, 250, 2, 350) {}
+		CuttingHead() : Part
+		(
+			Constants::replacement_cost_cutting_head,
+			Constants::repair_cost_cutting_head,
+			Constants::repair_time_cutting_head,
+			Constants::service_life_cutting_head
+		) {}
 
 		bool breaking() const override
 		{
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const CuttingHead& cuttinghead)
+		friend std::ostream& operator << (std::ostream& os, const CuttingHead& ch)
 		{
-			os << "CuttingHead " << static_cast<const Part&>(cuttinghead);
+			os << "CuttingHead " << static_cast<const Part&>(ch);
 			return os;
 		}
 };

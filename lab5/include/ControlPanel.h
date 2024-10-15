@@ -6,17 +6,22 @@
 class ControlPanel : public Part
 {
 	public:
-		ControlPanel() : Part(500, 100, 1, 200) {}
+		ControlPanel() : Part
+		(
+			Constants::replacement_cost_control_panel, 
+			Constants::repair_cost_control_panel,
+			Constants::repair_time_control_panel,
+			Constants::service_life_control_panel
+		) {}
 
 		bool breaking() const override
 		{
 			return deterioration_degree >= service_life;
 		}
 
-		friend std::ostream& operator << (std::ostream& os, const ControlPanel& controlpanel)
+		friend std::ostream& operator << (std::ostream& os, const ControlPanel& cp)
 		{
-			os << "ControlPanel " << static_cast<const Part&>(controlpanel);
-			return os;
+			return os << "ControlPanel " << static_cast<const Part&>(cp);
 		}
 };
 
