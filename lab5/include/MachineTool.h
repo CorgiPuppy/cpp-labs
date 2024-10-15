@@ -16,7 +16,7 @@ class MachineTool
 		int breakages;
 		int amount_of_part_replacements;
 		int sum_breaking_time;
-		int individual_breakages[10];
+		int individual_breakages[Constants::amount_of_machine_tools];
 
 		void set_breaking(Part* part)
 		{
@@ -29,7 +29,7 @@ class MachineTool
 		{
 			Part* old_part = parts[index_part];
 			repair_cost += old_part->get_replacement_cost();
-			breaking_time += 4;	
+			breaking_time += Constants::replacement_hours;	
 			amount_of_part_replacements++;
 			delete old_part;
 
@@ -56,7 +56,7 @@ class MachineTool
 			amount_of_part_replacements(0),
 			sum_breaking_time(0)
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < Constants::amount_of_machine_tools; i++)
 				individual_breakages[i] = 0;
 		}
 

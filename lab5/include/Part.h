@@ -49,9 +49,9 @@ class Part
 
 		int get_deterioration_degree() const { return deterioration_degree; }
 
-		friend std::ostream& operator << (std::ostream& os, const Part& p)
+		friend std::ostream& operator<< (std::ostream& os, const Part& p)
 		{
-			return os << "Part { replacement_cost - " << p.replacement_cost << ";" << " single_repair_cost - " << p.single_repair_cost << ";" << "repair_time - " << p.repair_time << ";" << "service_life - " << p.service_life << ";" << "deterioration_degree - " << p.deterioration_degree << ";" << "}";
+			return os << "Part { replacement_cost - " << p.replacement_cost << "," << " single_repair_cost - " << p.single_repair_cost << "," << "repair_time - " << p.repair_time << "," << "service_life - " << p.service_life << "," << "deterioration_degree - " << p.deterioration_degree << "}";
 		}
 };
 
