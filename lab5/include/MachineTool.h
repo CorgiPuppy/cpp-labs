@@ -1,18 +1,23 @@
 #ifndef MACHINETOOL_H
 #define MACHINETOOL_H
 
+#include "Shaft.h"
+#include "ElectricMotor.h"
+#include "ControlPanel.h"
+#include "CuttingHead.h"
+
 class MachineTool 
 {
 	private:
 		Part** parts;
 		int amount_of_parts;
-		double breaking_time;
-		double repair_cost;
+		int breaking_time;
+		int repair_cost;
 		int breakages;
 
 		void set_breaking(Part* part)
 		{
-			repair_cost += part->get_repair_cost();
+			repair_cost += part->get_single_repair_cost();
 			breaking_time += part->get_repair_time();
 			breakages++;
 		}
@@ -27,7 +32,7 @@ class MachineTool
 			amount_of_parts(0)	
 		{}
 
-		~Machine()
+		~MachineTool() 
 		{
 			for (int i = 0; i < amount_of_parts; i++)
 				delete parts[i];
@@ -44,12 +49,12 @@ class MachineTool
 
 			temp_parts[amount_of_parts] = part;
 			delete [] parts;
-			parts = new_parts;
+			parts = temp_parts;
 			
 			amount_of_parts++;
 		}
 
-		void operate(double intensity, double hours)
+		void operate(int intensity, int hours)
 		{
 			for (int hour = 0; hour < hours; hour++)
 			{
@@ -62,11 +67,11 @@ class MachineTool
 			}
 		}
 
-		double get_repair_cost() const { return repair_cost; }
+		int get_repair_cost() const { return repair_cost; }
 		
-		int get_breakages() const { return breakages; }
+		int get_amount_of_breakages() const { return breakages; }
 
-		double get_breaking_time() const { return breaking_time; }
+		int get_breaking_time() const { return breaking_time; }
 };
 
 #endif

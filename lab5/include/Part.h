@@ -13,24 +13,22 @@ class Part
 	public:
 		Part
 		(
-			double replacement_cost,
-			double single_repair_cost,
-			double repair_time,
-			double service_life,
-			double deterioration_degree
+			int replacement_cost,
+			int single_repair_cost,
+			int repair_time,
+			int service_life
 		) : 
-			this->replacement_cost(replacemt_cost), 
-			this->single_repair_cost(single_repair_cost),
-			this->repair_time(repair_time),
-			this->service_life(service_life),
-			this->deterioration_degree(deterioration_degree)
+			replacement_cost(replacement_cost), 
+			single_repair_cost(single_repair_cost),
+			repair_time(repair_time),
+			service_life(service_life)
 		{}
 
 		virtual ~Part() {}
 
 		virtual bool breaking() const = 0;
 
-		virtual void working(double intensity) 
+		virtual void working(int intensity) 
 		{
 			deterioration_degree += intensity;
 
@@ -38,15 +36,15 @@ class Part
 				deterioration_degree = service_life;
 		}
 		
-		double get_replacement_cost() const { return replacement_cost; }
+		int get_replacement_cost() const { return replacement_cost; }
 
-		double get_single_repair_cost() const { return repair_single_cost; {
+		int get_single_repair_cost() const { return single_repair_cost; }
 
-		double get_repair_time() const { return repair_time; }
+		int get_repair_time() const { return repair_time; }
 
-		double service_life() const { return service_life; }
+		int get_service_life() const { return service_life; }
 
-		double deterioration_degree() const { return deterioration_degree; }
+		int get_deterioration_degree() const { return deterioration_degree; }
 
 		friend std::ostream& operator << (std::ostream& os, const Part& part)
 		{

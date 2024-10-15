@@ -6,7 +6,7 @@
 class CuttingHead : public Part
 {
 	public:
-		CuttingHead() : Part(1200, 250, 2.5, 350) {}
+		CuttingHead() : Part(1200, 250, 2, 350) {}
 
 		bool breaking() const override
 		{
