@@ -128,8 +128,6 @@ class MachineTool
 		int get_amount_of_breakages() const { return breakages; }
 
 		int get_breaking_time() const { return breaking_time; }
-
-		int get_sum_breaking_time() const { return sum_breaking_time; }
 		
 		int get_amount_of_part_replacements() const { return amount_of_part_replacements; }
 

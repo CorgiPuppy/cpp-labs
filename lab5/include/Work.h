@@ -24,9 +24,9 @@ class Work
 			max_sum_breaking_time(0),
 			sum_amount_of_part_replacements(0)
 		{
-			MachineTool* machines = new MachineTool[Constants::amount_of_machine_tools];
-			int* sum_repair_cost_per_machine = new int[Constants::amount_of_machine_tools]{0};
-			int* breakages_per_machine = new int[Constants::amount_of_machine_tools]{0}; 
+			machines = new MachineTool[Constants::amount_of_machine_tools];
+			sum_repair_cost_per_machine = new int[Constants::amount_of_machine_tools]{0};
+			breakages_per_machine = new int[Constants::amount_of_machine_tools]{0}; 
 		}
 		
 		~Work()
@@ -50,15 +50,15 @@ class Work
 
 			for (int i = 0; i < Constants::amount_of_machine_tools; i++)
 			{
-				sum_repair_cost += machines->get_repair_cost();
-				sum_amount_of_breakages += machines->get_amount_of_breakages();
-				sum_breaking_time += machines->get_breaking_time();
-				max_sum_breaking_time = (max_sum_breaking_time > machines->get_sum_breaking_time()) ? max_sum_breaking_time : machines->get_sum_breaking_time();
-				sum_amount_of_part_replacements += machines->get_amount_of_part_replacements();
-				sum_repair_cost_per_machine[i] += machines->get_repair_cost();
-				breakages_per_machine[i] += machines->get_individual_breakage(i);	
+				sum_repair_cost += machines[i].get_repair_cost();
+				sum_amount_of_breakages += machines[i].get_amount_of_breakages();
+				sum_breaking_time += machines[i].get_breaking_time();
+				max_sum_breaking_time = (max_sum_breaking_time > machines[i].get_breaking_time()) ? max_sum_breaking_time : machines[i].get_breaking_time();
+				sum_amount_of_part_replacements += machines[i].get_amount_of_part_replacements();
+				sum_repair_cost_per_machine[i] += machines[i].get_repair_cost();
+				breakages_per_machine[i] += machines[i].get_amount_of_breakages();	
 
-				//print_parts(machines);
+				print_parts(machines[i]);
 			}
 		}
 		
