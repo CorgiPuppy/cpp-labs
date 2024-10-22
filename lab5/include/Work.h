@@ -1,7 +1,7 @@
 #ifndef WORK_H
 #define WORK_H
 
-#include "MachineTool.h"
+#include "details/MachineTool.h"
 
 class Work
 {

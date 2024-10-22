@@ -1,7 +1,7 @@
 #ifndef MACHINETOOL_H
 #define MACHINETOOL_H
 
-#include "PartFactory.h"
+#include "../factory/PartFactory.h"
 
 class MachineTool 
 {
@@ -14,41 +14,20 @@ class MachineTool
 		int sum_breaking_time;
 		int individual_breakages[Constants::amount_of_machine_tools];
 
-		void set_breaking(Part* part)
+		void set_breaking(Part* part, int &hours)
 		{
-			repair_cost += part->get_single_repair_cost();
-			breaking_time += part->get_repair_time();
+			hours += Constants::replacement_hours;
+			breaking_time += Constants::replacement_hours;
+			repair_cost += part->get_replacement_cost();
+			amount_of_part_replacements++;
 		}
 
-		void replacing_part(int index_part, int index_machine)
+		void replacing_part(Part* part, int &hours)
 		{
-			Part* old_part = parts[index_part];
-			repair_cost += old_part->get_replacement_cost();
-			breaking_time += Constants::replacement_hours;	
-			amount_of_part_replacements++;
-
-			individual_breakages[index_machine]++;
-
-			delete old_part;
-
-			switch (index_part)
-			{
-				case 0: 
-					parts[index_part] = new Shaft();
-					break;
-				
-				case 1:
-					parts[index_part] = new ElectricMotor();
-					break;
-
-				case 2:
-					parts[index_part] = new ControlPanel();
-					break;
-
-				case 3:
-					parts[index_part] = new CuttingHead();
-					break;
-			}
+			hours += part->get_repair_time();
+			breaking_time = part->get_repair_time();
+			repair_cost += part->get_replacement_cost();
+			breakages++;
 		}
 
 	public:
@@ -77,21 +56,7 @@ class MachineTool
 
 			delete [] parts;
 		}
-/*
-		void add_part(Part* part)
-		{
-			Part** temp_parts = new Part*[amount_of_parts + 1];
-
-			for (int i = 0; i < amount_of_parts; i++)
-				temp_parts[i] = parts[i];
-
-			temp_parts[amount_of_parts] = part;
-			delete [] parts;
-			parts = temp_parts;
-			
-			amount_of_parts++;
-		}
-*/
+		
 		int operating(int intensity)
 		{
 			int hours = 0;
@@ -102,19 +67,13 @@ class MachineTool
 
 				if (parts[i]->breaking())
 				{
-					hours += Constants::replacement_hours;
-					breaking_time += Constants::replacement_hours;
-					repair_cost += parts[i]->get_replacement_cost();
-					amount_of_part_replacements++;
+					set_breaking(parts[i], hours);
 
 					return hours;
 				}
-				else if (rand() % 100 < 5)
+				else if (rand() % Constants::max_intensity < intensity)
 				{
-					hours += parts[i]->get_repair_time();
-					breaking_time = parts[i]->get_repair_time();
-					repair_cost += parts[i]->get_replacement_cost();
-					breakages++;
+					replacing_part(parts[i], hours);
 
 					return hours;
 				}

@@ -1,10 +1,10 @@
 #ifndef PARTFACTORY_H
 #define PARTFACTORY_H
 
-#include "Shaft.h"
-#include "ElectricMotor.h"
-#include "ControlPanel.h"
-#include "CuttingHead.h"
+#include "../details/Shaft.h"
+#include "../details/ElectricMotor.h"
+#include "../details/ControlPanel.h"
+#include "../details/CuttingHead.h"
 
 #include <cstring>
 
