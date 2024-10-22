@@ -1,15 +1,12 @@
 #ifndef MACHINETOOL_H
 #define MACHINETOOL_H
 
-#include "Shaft.h"
-#include "ElectricMotor.h"
-#include "ControlPanel.h"
-#include "CuttingHead.h"
+#include "PartFactory.h"
 
 class MachineTool 
 {
 	private:
-		Part* parts[Constants::amount_of_parts];
+		Part** parts;
 		int breaking_time;
 		int repair_cost;
 		int breakages;
@@ -63,10 +60,11 @@ class MachineTool
 			amount_of_part_replacements(0),
 			sum_breaking_time(0)
 		{
-			parts[0] = new Shaft();
-			parts[1] = new ElectricMotor();
-			parts[2] = new ControlPanel();
-			parts[3] = new CuttingHead();
+			parts = new Part*[4];
+			parts[0] = PartFactory::createPart("Shaft");
+			parts[1] = PartFactory::createPart("ElectricMotor");
+			parts[2] = PartFactory::createPart("ControlPanel");
+			parts[3] = PartFactory::createPart("CuttingHead");
 
 			for (int i = 0; i < Constants::amount_of_machine_tools; i++)
 				individual_breakages[i] = 0;
@@ -76,6 +74,8 @@ class MachineTool
 		{
 			for (int i = 0; i < Constants::amount_of_parts; i++)
 				delete parts[i];
+
+			delete [] parts;
 		}
 /*
 		void add_part(Part* part)
@@ -92,27 +92,35 @@ class MachineTool
 			amount_of_parts++;
 		}
 */
-		void operating(int intensity, int index_machine)
+		int operating(int intensity)
 		{
-			for (int day = 0; day < Constants::days; day++)
+			int hours = 0;
+
+			for (int i = 0; i < Constants::amount_of_parts; i++)
 			{
-				for (int hour = 0; hour < Constants::hours; hour++)
+				parts[i]->working(intensity);
+
+				if (parts[i]->breaking())
 				{
-					for (int i = 0; i < Constants::amount_of_parts; i++)
-					{
-						parts[i]->working(intensity);
+					hours += Constants::replacement_hours;
+					breaking_time += Constants::replacement_hours;
+					repair_cost += parts[i]->get_replacement_cost();
+					amount_of_part_replacements++;
 
-						if (parts[i]->breaking())
-						{
-							set_breaking(parts[i]);
-							sum_breaking_time += parts[i]->get_repair_time();
+					return hours;
+				}
+				else if (rand() % 100 < 5)
+				{
+					hours += parts[i]->get_repair_time();
+					breaking_time = parts[i]->get_repair_time();
+					repair_cost += parts[i]->get_replacement_cost();
+					breakages++;
 
-							breakages++;
-							replacing_part(i, index_machine);
-						}
-					}
+					return hours;
 				}
 			}
+			
+			return 1;
 		}
 
 		int get_repair_cost() const { return repair_cost; }

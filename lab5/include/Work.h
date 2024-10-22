@@ -5,14 +5,15 @@
 
 class Work
 {
-	private:
+	private:	
+		MachineTool* machines;
 		int sum_repair_cost;
 		int sum_amount_of_breakages;
 		int sum_breaking_time;
 		int max_sum_breaking_time;
 		int sum_amount_of_part_replacements;
-		int sum_repair_cost_per_machine[Constants::amount_of_machine_tools];
-		int breakages_per_machine[Constants::amount_of_machine_tools]; 
+		int* sum_repair_cost_per_machine;
+		int* breakages_per_machine; 
 
 	public:
 		Work()
@@ -23,34 +24,41 @@ class Work
 			max_sum_breaking_time(0),
 			sum_amount_of_part_replacements(0)
 		{
+			MachineTool* machines = new MachineTool[Constants::amount_of_machine_tools];
+			int* sum_repair_cost_per_machine = new int[Constants::amount_of_machine_tools]{0};
+			int* breakages_per_machine = new int[Constants::amount_of_machine_tools]{0}; 
+		}
+		
+		~Work()
+		{
+			delete [] machines;
+			delete [] sum_repair_cost_per_machine;
+			delete [] breakages_per_machine;
+		}
+
+		void simulating()
+		{	
+			int hours = Constants::hours * Constants::days * Constants::months;
+
+			while (hours > 0)
+			{
+				int intensity = rand() % Constants::max_intensity + 1;
+
+				for (int i = 0; i < Constants::amount_of_machine_tools; i++)
+					hours -= machines[i].operating(intensity);
+			}
+
 			for (int i = 0; i < Constants::amount_of_machine_tools; i++)
 			{
-				sum_repair_cost_per_machine[i] = 0;
-				breakages_per_machine[i] = 0;
-			}
-		}
-		void simulating()
-		{
-			for (int month = 0; month < Constants::months; month++)
-			{
-				for (int i = 0; i < Constants::amount_of_machine_tools; i++)
-				{
-					MachineTool machine;
+				sum_repair_cost += machines->get_repair_cost();
+				sum_amount_of_breakages += machines->get_amount_of_breakages();
+				sum_breaking_time += machines->get_breaking_time();
+				max_sum_breaking_time = (max_sum_breaking_time > machines->get_sum_breaking_time()) ? max_sum_breaking_time : machines->get_sum_breaking_time();
+				sum_amount_of_part_replacements += machines->get_amount_of_part_replacements();
+				sum_repair_cost_per_machine[i] += machines->get_repair_cost();
+				breakages_per_machine[i] += machines->get_individual_breakage(i);	
 
-					int intensity = rand() % Constants::max_intensity + 1;
-
-					machine.operating(intensity, i);
-
-					sum_repair_cost += machine.get_repair_cost();
-					sum_amount_of_breakages += machine.get_amount_of_breakages();
-					sum_breaking_time += machine.get_breaking_time();
-					max_sum_breaking_time = (max_sum_breaking_time > machine.get_sum_breaking_time()) ? max_sum_breaking_time : machine.get_sum_breaking_time();
-					sum_amount_of_part_replacements += machine.get_amount_of_part_replacements();
-					sum_repair_cost_per_machine[i] += machine.get_repair_cost();
-					breakages_per_machine[i] += machine.get_individual_breakage(i);	
-
-					print_parts(machine);
-				}
+				//print_parts(machines);
 			}
 		}
 		
