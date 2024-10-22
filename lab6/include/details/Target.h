@@ -4,10 +4,10 @@
 class Target
 {
 	public:
-		virtual double getHitChance(double distance) const = 0;
-		virtual void takeDamage(int hits) = 0;
-		virtual bool isAvailable() const = 0;
-		virtual double getSize() const = 0;
+		virtual double get_hit_chance(double distance) const = 0;
+		virtual void take_damage(int hits) = 0;
+		virtual bool availability() const = 0;
+		virtual double get_size() const = 0;
 		virtual ~Target() = default;
 };
 

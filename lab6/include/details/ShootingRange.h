@@ -17,8 +17,8 @@ class ShootingRange
 			{
 				double dist = (rand() % 100) + 10; // Расстояние от 10 до 110 метров
 				double size = (rand() % 5) + 1; // Размер мишени от 1 до 5 м²
-				int maxHits = (rand() % 5) + 1; // Количество попаданий, после которых мишень разрушается
-				targets[i] = new StaticTarget(dist, size, maxHits);
+				int max_hits = (rand() % 5) + 1; // Количество попаданий, после которых мишень разрушается
+				targets[i] = new StaticTarget(dist, size, max_hits);
 			}
 		}
 		
@@ -37,9 +37,9 @@ class ShootingRange
 			for (int i = 0; i < targetCount; i++)
 			{
 				Target* target = targets[i];
-				if (!target->isAvailable()) continue;
+				if (!target->availability()) continue;
 
-				double distance = target->getSize();
+				double distance = target->get_size();
 				int hits = 0;
 
 				// Симуляция стрельбы
@@ -49,7 +49,7 @@ class ShootingRange
 					weapon.fire(distance, mode, hits);
 				}
 
-				target->takeDamage(hits);
+				target->take_damage(hits);
 				std::cout << *dynamic_cast<StaticTarget*>(target) << "\n"; // Вывод информации о мишени
 			}
 		}

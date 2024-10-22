@@ -17,7 +17,7 @@ class Pistol : public Weapon
 
 		double reload() override
 		{
-			currentAmmo = maxAmmo;
+			currentAmmo = amount_of_rounds;
 			return reloadTime;
 		}
 

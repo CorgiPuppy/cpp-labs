@@ -8,37 +8,37 @@ class StaticTarget : public Target
 	private:
 		double distance;
 		double size;
-		int maxHits;
-		int currentHits;
+		int max_hits;
+		int current_hits;
 
 	public:
 		StaticTarget(double dist, double sz, int maxH) 
-			: distance(dist), size(sz), maxHits(maxH), currentHits(0) {}
+			: distance(dist), size(sz), max_hits(maxH), current_hits(0) {}
 
-		double getHitChance(double distance) const override
+		double get_hit_chance(double distance) const override
 		{
 			return std::max(0.0, 1.0 - (distance / 100.0));
 		}
 
-		void takeDamage(int hits) override
+		void take_damage(int hits) override
 		{
-			currentHits += hits;
+			current_hits += hits;
 		}
 
-		bool isAvailable() const override
+		bool availability() const override
 		{
-			return currentHits < maxHits;
+			return current_hits < max_hits;
 		}
 
-		double getSize() const override
+		double get_size() const override
 		{
 			return size;
 		}
 
 		friend std::ostream& operator<<(std::ostream& os, const StaticTarget& target)
 		{
-			os << "StaticTarget { Distance: " << target.distance 
-			   << " m, Size: " << target.size << " m², Hits: " << target.currentHits << "/" << target.maxHits << " }";
+			os << "Цель" << std::endl << "{" << std::endl << "\tДальность: " << target.distance 
+			   << " метров" << std::endl << "\tРазмер: " << target.size << " м^2" << std::endl << "\tКоличество попаданий - " << target.current_hits << "/" << target.max_hits << std::endl << "}";
 			return os;
 		}
 };
