@@ -6,10 +6,19 @@
 class Pistol : public Weapon
 {
 	private:
-		double calculateHitChance(double distance) const
+		double calculate_hit_chance(double distance, double visibility, double movement) const
 		{
-			double ratio = distance / effectiveRange;
-			return ratio < 1.0 ? 1.0 - ratio : 0.0;
+			double ratio = distance / effective_range;
+			double base_hit_chance = ratio < 1.0 ? (1.0 - ratio) : 0.0;
+			base_hit_chance *= visibility;
+			base_hit_chance *= (1.0 - movement);
+			
+			if (base_hit_chance < 0.0)
+				base_hit_chance = 0.0;
+			else if (base_hit_chance > 1.0)
+				base_hit_chance = 1.0;
+
+			return base_hit_chance;
 		}
 
 	public:
@@ -17,37 +26,43 @@ class Pistol : public Weapon
 
 		double reload() override
 		{
-			currentAmmo = amount_of_rounds;
+			current_ammo = amount_of_rounds;
 			return reloadTime;
 		}
 
 		int fire(double distance, int mode, int &hits) override
 		{
-			if (currentAmmo <= 0) return 0;
-			--currentAmmo;
-			double hitChance = calculateHitChance(distance);
+			if (current_ammo <= 0) return 0;
 
-			int hitCount = 0;
+			double visibility = ((double) rand() / (RAND_MAX)) + 1;
+			double movement = ((double) rand() / (RAND_MAX)) + 1;
+
+			int hit_count = 0;
+
+			double hit_chance = calculate_hit_chance(distance, visibility, movement);
+
 			if (mode == 1)
 			{ 
-				if ((static_cast<double>(rand()) / RAND_MAX) < hitChance)
-					++hitCount;
+				if ((static_cast<double>(rand()) / RAND_MAX) < hit_chance)
+					hit_count++;
+
+				current_ammo--;
 			}
 			else if (mode == 2)
 			{
-				int bulletsInBurst = (currentAmmo < 3) ? currentAmmo : 3;
-				for (int i = 0; i < bulletsInBurst; ++i)
+				int bullets_in_flash = (current_ammo < 3) ? current_ammo : 3;
+				for (int i = 0; i < bullets_in_flash; i++)
 				{
-					if ((static_cast<double>(rand()) / RAND_MAX) < hitChance)
-						++hitCount;
+					if ((static_cast<double>(rand()) / RAND_MAX) < hit_chance)
+						hit_count++;
 				}
 
-				currentAmmo -= bulletsInBurst;
+				current_ammo -= bullets_in_flash;
 			}
 
-			hits += hitCount;
+			hits += hit_count;
 
-			return hitCount;
+			return hit_count;
 		}	
 };
 

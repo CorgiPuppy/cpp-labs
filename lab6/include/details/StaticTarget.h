@@ -17,7 +17,7 @@ class StaticTarget : public Target
 
 		double get_hit_chance(double distance) const override
 		{
-			return std::max(0.0, 1.0 - (distance / 100.0));
+			return (distance / 100.0) < 1.0 ? (1.0 - (distance / 100.0)) : 0.0;
 		}
 
 		void take_damage(int hits) override
