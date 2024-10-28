@@ -25,4 +25,4 @@ $(BIN_DIR):
 
 clean:
 	@echo "Cleaning up.."
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+	@$(RM) -rv $(BIN_DIR)
