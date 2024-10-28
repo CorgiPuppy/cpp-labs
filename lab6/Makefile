@@ -1,11 +1,15 @@
 SRC_DIR := src
-BIN_DIR := bin
+INC_DIR := include
+TARGET_DIR := target
 
-EXE := $(BIN_DIR)/main
+
+EXE := $(TARGET_DIR)/main
+INC := $(wildcard $(INC_DIR)/*.h)
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(TARGET_DIR)/%.o, $(SRC))
 
-CPPC=g++
-CPPFLAGS=-Wall
+CPPC := g++
+CPPFLAGS := -Wall
 
 .PHONY: all
 
@@ -15,14 +19,18 @@ run: $(EXE)
 	@echo "Running.."
 	@./$<
 
-$(EXE): $(SRC_DIR)/*.cpp | $(BIN_DIR)
-	@echo "Building.."
+$(EXE): $(OBJ) | $(TARGET_DIR)
+	@echo "Building binaries."
 	@$(CPPC) $^ -o $@
 
-$(BIN_DIR):
-	@echo "Create bin dir.."	
+$(TARGET_DIR)/%.o: $(SRC_DIR)/%.cpp $(INC) | $(TARGET_DIR)
+	@echo "Building objects.."
+	@$(CPPC) $(CPPFLAGS) -c $< -o $@ -I $(INC_DIR) 
+
+$(TARGET_DIR):
+	@echo "Create target dir.."
 	@mkdir -p $@
 
 clean:
 	@echo "Cleaning up.."
-	@$(RM) -rv $(BIN_DIR)
+	@$(RM) -rv $(TARGET_DIR)
