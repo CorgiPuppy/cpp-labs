@@ -73,13 +73,13 @@ class Vector
 
 		friend std::ostream &operator<<(std::ostream &os, const Vector<T>& v)
 		{
-			os << "Вектор" << std::endl << "{" << std::endl;
+			os << "Вектор" << "{";
 			for (int i = 0; i < v.size; i++)
 			{
 				os << v.data[i];
 				if (i < v.size - 1) os << ", ";
 			}
-			os << std::endl << "}" << std::endl;
+			os << "}" << std::endl;
 			return os;
 		}
 };
