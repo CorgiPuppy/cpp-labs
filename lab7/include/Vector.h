@@ -3,14 +3,15 @@
 
 #include "Constants.h"
 
-template <class T> 
+template <typename T> 
 class Vector
 {
 	private:
 		T* data;	
 		int size;
 		int capacity;
-		
+
+	public:
 		void resize(int temp_capacity)
 		{
 			T* temp_data = new T[temp_capacity];
@@ -23,7 +24,6 @@ class Vector
 			capacity = temp_capacity;
 		}
 
-	public:
 		Vector()
 		:
 			size(Constants::initial_size),
@@ -73,7 +73,7 @@ class Vector
 
 		friend std::ostream &operator<<(std::ostream &os, const Vector<T>& v)
 		{
-			os << "Вектор" << "{";
+			os << "Вектор " << "{";
 			for (int i = 0; i < v.size; i++)
 			{
 				os << v.data[i];
@@ -81,6 +81,41 @@ class Vector
 			}
 			os << "}" << std::endl;
 			return os;
+		}
+
+		class Iterator
+		{
+			private:
+				T* pointer;
+
+			public:
+				Iterator(T* p) : pointer(p) {}
+
+				T& operator*()
+				{
+					return *pointer;
+				}
+
+				Iterator &operator++()
+				{
+					pointer++;
+					return *this;
+				}
+
+				bool operator!=(const Iterator &it) const
+				{
+					return pointer != it.pointer;
+				}
+		};
+
+		Iterator begin()
+		{
+			return Iterator(data);
+		}
+
+		Iterator end()
+		{
+			return Iterator(data + size);
 		}
 };
 
