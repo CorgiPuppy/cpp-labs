@@ -10,6 +10,11 @@ class ShootingRange
 		int target_count;
 	
 	public:
+		/*
+		 * Конструктор класса
+		 *
+		 */
+
 		ShootingRange()
 		{
 			target_count = 5;
@@ -20,11 +25,25 @@ class ShootingRange
 			targets[3] = 80;
 			targets[4] = 160; 
 		}
-		
+	
+		/*
+		 * Деструктор класса
+		 *
+		 * Освобождение памяти всех мишеней
+		 */
+
 		~ShootingRange()
 		{
 			delete[] targets;
 		}
+
+		/*
+		 * Симуляция стрельбища
+		 *
+		 * @param weapon оружие
+		 * @param sum_fire_rate суммарная величина темпа стрельбы
+		 * @param sum_accuracy суммарная величина точности стрельбы
+		 */
 
 		void simulate(Weapon &weapon, double &sum_fire_rate, double &sum_accuracy)
 		{

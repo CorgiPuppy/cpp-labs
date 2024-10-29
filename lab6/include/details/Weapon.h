@@ -1,6 +1,8 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include "../Constants.h"
+
 #include <cstring>
 #include <cmath>
 
@@ -19,20 +21,60 @@ class Weapon
 		int modifications;
 		double shot_hit_chance;
 
+		/*
+		 * Конструктор класса
+		 *
+		 * @param n название оружия
+		 * @param cal калибр оружия
+		 * @param aor количество патронов в оружии
+		 * @param rt время перезарядки
+		 * @param fm модификации стрельбы
+		 * @param wt вес оружия
+		 * @param er Прицельная дальность оружия
+		 * @param acc точность оружия
+		 * @param mods модификации оружия
+		 */
+
 		Weapon(const char* n, double cal, int aor, double rt, int fm, double wt, double er, int acc, int mods) : caliber(cal), amount_of_rounds(aor), reload_time(rt), fire_mods(fm), weight(wt), effective_range(er), accuracy(acc), modifications(mods), current_ammo(0), shot_hit_chance(1.0) 
 		{
 			name = new char[strlen(n) + 1];
 			strcpy(name, n);
 		}
 
+		/*
+		 * Деструктор класса
+		 *
+		 * Освобождает память массива символов
+		 */
+
 		virtual ~Weapon()
 		{
 			delete [] name;
 		}
 
+		/*
+		 * Перезарядка оружия
+		 *
+		 * @return возвращает количество патронов
+		 */
+
 		virtual double reload() = 0;
 
+		/*
+		 * Стрельба из оружия
+		 *
+		 * @return возвращает 1 в случае попадания, иначе - 0
+		 */
+
 		virtual int fire(double distance) = 0;
+
+		/*
+		 * Перезарядка патронов
+		 *
+		 * @param ammo количество патронов
+		 *
+		 * @return возвращает количество времени на перезарядку
+		 */
 
 		double reload_ammo(int ammo)
 		{
@@ -44,6 +86,14 @@ class Weapon
 			return ammo_to_reload * reload_time;
 		}
 
+		/*
+		 * Вычисление шанса попадания по мишени
+		 *
+		 * @param distance дистанция до мишени
+		 *
+		 * @return возвращает шанс попадания по мишени
+		 */
+
 		double calculate_hit_chance(double distance) const
 		{
 			if (distance <= effective_range)
@@ -52,6 +102,14 @@ class Weapon
 			double ratio = effective_range / distance;
 			return (ratio > 0.0) ? (100.0 * std::exp(-3 * (1.0 - ratio))) : 0.0;
 		}
+
+		/*
+		 * Вывод характеристики оружия
+		 *
+		 * @param os поток вывода, куда записываются характеристики
+		 *
+		 * @return возвращает характеристики оружия в виде потока
+		 */
 
 		friend std::ostream &operator<<(std::ostream &os, const Weapon &w)
 		{
