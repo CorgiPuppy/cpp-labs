@@ -6,15 +6,43 @@
 class PumpShotgun : public Weapon
 {
 	public:
-		PumpShotgun() : Weapon("Помповый дробовик", 12.0, 8, 0.5, 1, 3.5, 30, 70, 1)
+		/*
+		 * Конструктор класса
+		 *
+		 */
+
+		PumpShotgun() : Weapon
+		(
+			Constants::name_pump_shotgun, 
+			Constants::caliber_shotgun,
+			Constants::amount_of_rounds_shotgun,
+			Constants::reload_time_shotgun,
+			Constants::fire_mods_shotgun,
+			Constants::weight_shotgun,
+			Constants::effective_range_shotgun,
+			Constants::accuracy_shotgun,
+			Constants::amount_of_modifications_shotgun
+		)
 		{
 			current_ammo = amount_of_rounds;
 		}
+
+		/*
+		 * Перезарядка дробовика
+		 *
+		 * @return количество времени, затраченного на перезарядку
+		 */
 
 		double reload() override
 		{
 			return reload_ammo(amount_of_rounds);
 		}
+
+		/*
+		 * Стрельба из дробовика
+		 *
+		 * @return возвращает 1 в случае попадния, иначе - 0 
+		 */
 
 		int fire(double distance) override
 		{

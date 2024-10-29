@@ -6,15 +6,43 @@
 class SingleShotRifle : public Weapon
 {
 	public:
-		SingleShotRifle() : Weapon("Однозарядная винтовка", 7.62, 1, 2.5, 1, 4.0, 800, 90, 3)
+		/*
+		 * Конструктор класса
+		 *
+		 */
+
+		SingleShotRifle() : Weapon
+		(
+			Constants::name_single_shot_rifle, 
+			Constants::caliber_rifle,
+			Constants::amount_of_rounds_rifle,
+			Constants::reload_time_rifle,
+			Constants::fire_mods_rifle,
+			Constants::weight_rifle,
+			Constants::effective_range_rifle,
+			Constants::accuracy_rifle,
+			Constants::amount_of_modifications_rifle
+		)
 		{
 			current_ammo = amount_of_rounds;
 		}
+
+		/*
+		 * Перезарядка винтовки
+		 *
+		 * @return количество времени, затраченного на перезарядку
+		 */
 
 		double reload() override
 		{
 			return reload_ammo(amount_of_rounds);
 		}
+
+		/*
+		 * Стрельба из винтовки
+		 *
+		 * @return возвращает 1 в случае попадния, иначе - 0 
+		 */
 
 		int fire(double distance) override
 		{

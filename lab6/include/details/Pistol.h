@@ -6,15 +6,43 @@
 class Pistol : public Weapon
 {
 	public:
-		Pistol() : Weapon("Пистолет", 9.0, 20, 1.5, 1, 1.4, 50, 75, 3)
+		/*
+		 * Конструктор класса
+		 *
+		 */
+
+		Pistol() : Weapon
+		(
+			Constants::name_pistol, 
+			Constants::caliber_pistol,
+			Constants::amount_of_rounds_pistol,
+			Constants::reload_time_pistol,
+			Constants::fire_mods_pistol,
+			Constants::weight_pistol,
+			Constants::effective_range_pistol,
+			Constants::accuracy_pistol,
+			Constants::amount_of_modifications_pistol
+		)
 		{
 			current_ammo = amount_of_rounds;
 		}
+
+		/*
+		 * Перезарядка пистолета
+		 *
+		 * @return количество времени, затраченного на перезарядку
+		 */
 
 		double reload() override
 		{
 			return reload_ammo(amount_of_rounds);
 		}
+
+		/*
+		 * Стрельба из пистолета
+		 *
+		 * @return возвращает 1 в случае попадния, иначе - 0 
+		 */
 
 		int fire(double distance) override
 		{
