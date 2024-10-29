@@ -13,9 +13,9 @@ int main()
 
     ShootingRange range;
 
-	double sum_fire_rate = 0;
-	double sum_accuracy = 0;
-	int weapons_count = 3;
+	double sum_fire_rate = 0.0;
+	double sum_accuracy = 0.0;
+	int weapons_count = Constants::amount_of_weapons;
 
     range.simulate(*pistol, sum_fire_rate, sum_accuracy);
     range.simulate(*rifle, sum_fire_rate, sum_accuracy);

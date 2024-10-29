@@ -3,6 +3,16 @@
 
 namespace Constants
 {
+	const int amount_of_weapons = 3;
+
+	const int max_amount_of_targets = 5;
+	const int distance = 10;
+	const int step_distance = 3;
+
+	const int amount_of_shots = 100;
+
+	const int one_minute = 60;
+
 	const char* name_pistol = "Пистолет";
 	const double caliber_pistol = 9.0;
 	const int amount_of_rounds_pistol = 20;

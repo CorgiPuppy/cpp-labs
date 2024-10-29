@@ -17,15 +17,12 @@ class ShootingRange
 
 		ShootingRange()
 		{
-			target_count = 5;
+			target_count = rand() % Constants::max_amount_of_targets + 1;
 			targets = new double[target_count];
-			targets[0] = 10;		
-			targets[1] = 20;
-			targets[2] = 40;
-			targets[3] = 80;
-			targets[4] = 160; 
-		}
-	
+			for (int i = 0, dist = Constants::distance; i < target_count; i++, dist *= Constants::step_distance)
+				targets[i] = dist;		
+		}	
+
 		/*
 		 * Деструктор класса
 		 *
@@ -54,7 +51,7 @@ class ShootingRange
 			{
 				double distance = targets[i];
 				int hits = 0;
-				int sum_shots = 100;
+				int sum_shots = Constants::amount_of_shots;
 				double sum_time = 0.0;
 
 				for (int j = 0; j < sum_shots; j++)
@@ -63,15 +60,15 @@ class ShootingRange
 						sum_time += weapon.reload();
 
 					hits += weapon.fire(distance);
-					sum_time += 0.7;
+					sum_time += 1.0;
 				}
 
 				double accuracy = (double)hits / sum_shots * 100;
-				double fire_rate = sum_shots / sum_time * 60;
+				double fire_rate = sum_shots / sum_time * Constants::one_minute;
 
 				std::cout << std::endl << "Мишень №" << i + 1 << ":" << std::endl;
 				std::cout << "\tДистанция - " << distance << " метров" << std::endl;
-				std::cout << "\tВыстрелов - " << hits << " штук" << std::endl;
+				std::cout << "\tПопадания - " << hits << " штук" << std::endl;
 				std::cout << "\tТочность - " << accuracy << "%" << std::endl;
 				std::cout << "\tТемп стрельбы - " << fire_rate << " выстрелов в минуту" << std::endl;
 				
