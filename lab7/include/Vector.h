@@ -11,6 +11,8 @@ class Vector
 		int size;
 		int capacity;
 
+		int amount_of_modifications;
+
 	public:
 		void resize(int temp_capacity)
 		{
@@ -24,10 +26,11 @@ class Vector
 			capacity = temp_capacity;
 		}
 
-		Vector()
+		Vector(int initial_capacity = Constants::initial_capacity)
 		:
 			size(Constants::initial_size),
-			capacity(Constants::initial_capacity)
+			capacity(initial_capacity),
+			amount_of_modifications(Constants::amount_of_modifications)
 		{
 			data = new T[capacity];	
 		}
@@ -49,8 +52,11 @@ class Vector
 
 		T& operator[](int index)
 		{
-			if (index >= size)
-				std::cout << "Выход за пределы вектора" << std::endl;
+			if (index < 0 || index >= size)
+			{
+				std::cout << "Выход за пределы вектора." << std::endl;
+				exit(EXIT_FAILURE);
+			}
 
 			return data[index];
 		}
@@ -61,14 +67,32 @@ class Vector
 				resize(capacity * 2);
 
 			data[size++] = value;
+
+			amount_of_modifications++;
+			if (amount_of_modifications >= Constants::resize_threshold)
+			{
+				resize(size + size / 2);
+				amount_of_modifications;
+			}
 		}
 
 		void pop_back()
 		{
 			if (is_empty())
-				std::cout << "Вектор пуст" << std::endl;
+			{
+				std::cout << "Вектор пуст." << std::endl;
+				return;
+			}
 
-			--size;
+			size--;
+
+			amount_of_modifications++;	
+			if (amount_of_modifications >= Constants::resize_threshold)
+			{
+				resize(size - size / 2);
+				amount_of_modifications;
+			}
+
 		}
 
 		friend std::ostream &operator<<(std::ostream &os, const Vector<T>& v)

@@ -26,8 +26,8 @@ int main()
             case 1:
                 std::cout << "Введите начальную вместимость (n): ";
                 std::cin >> n;
-                my_vector = Vector<int>(n); // Создаем новый вектор
-                std::cout << "Создан вектор с вместимостью: " << n << std::endl;
+                my_vector = Vector<int>(n);
+				std::cout << "Создан вектор с вместимостью: " << n << std::endl;
                 break;
 
             case 2:
@@ -37,20 +37,16 @@ int main()
             case 3:
                 std::cout << "Размер вектора: " << my_vector.get_size() << std::endl;
                 break;
+
 			case 4:
                 std::cout << "Введите индекс элемента: ";
                 std::cin >> index;
-                try {
-                    std::cout << "Элемент: " << my_vector[index] << std::endl;
-                } catch (const std::out_of_range& e) {
-                    std::cout << e.what() << std::endl;
-                }
+                std::cout << "Элемент: " << my_vector[index] << std::endl; 
                 break;
 
             case 5:
                 std::cout << "Введите новую вместимость вектора: ";
                 std::cin >> n;
-                // Этот вариант нужно реализовать в вашем классе
                 my_vector.resize(n);
                 std::cout << "Вместимость вектора изменена на: " << n << std::endl;
                 break;
@@ -63,12 +59,8 @@ int main()
                 break;
 			
 			case 7:
-                try {
-                    my_vector.pop_back();
-                    std::cout << "Последний элемент удален." << std::endl;
-                } catch (const std::out_of_range& e) {
-                    std::cout << e.what() << std::endl;
-                }
+                my_vector.pop_back();
+                std::cout << "Последний элемент удален." << std::endl;
                 break;
 
             case 0:
