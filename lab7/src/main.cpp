@@ -11,14 +11,16 @@ int main()
 
     do {
         std::cout << "Выберите действие:" << std::endl;
-        std::cout << "\t1. Создание пустого вектора на n элементов" << std::endl;
-        std::cout << "\t2. Проверка, пустой ли вектор" << std::endl;
-        std::cout << "\t3. Получить размер вектора" << std::endl;
-        std::cout << "\t4. Получение произвольного элемента" << std::endl;
-        std::cout << "\t5. Изменение размера вектора" << std::endl;
-        std::cout << "\t6. Добавление нового элемента в конец вектора" << std::endl;
-        std::cout << "\t7. Удаление последнего элемента из вектора" << std::endl;
-		std::cout << "\t0. Выход" << std::endl;
+        std::cout << "\t1. Создание пустого вектора на n элементов." << std::endl;
+        std::cout << "\t2. Проверка, пустой ли вектор." << std::endl;
+        std::cout << "\t3. Получить размер вектора." << std::endl;
+        std::cout << "\t4. Получение произвольного элемента." << std::endl;
+        std::cout << "\t5. Изменение размера вектора." << std::endl;
+        std::cout << "\t6. Добавление нового элемента в конец вектора." << std::endl;
+        std::cout << "\t7. Удаление последнего элемента из вектора." << std::endl;
+		std::cout << "\t8. Вывод вектора." << std::endl;
+		std::cout << "\t9. Обход вектора." << std::endl;
+		std::cout << "\t10. Выход." << std::endl;
 
         std::cout << "Ваш выбор: ";
         std::cin >> choice;
@@ -63,7 +65,18 @@ int main()
                 std::cout << "Последний элемент удален." << std::endl;
                 break;
 
-            case 0:
+			case 8:
+				std::cout << my_vector;
+				break;
+
+			case 9:
+				std::cout << "Элементы вектора: ";
+				for (auto& el : my_vector)
+					std::cout << el << " ";
+				std::cout << std::endl;
+				break;
+
+            case 10:
                 std::cout << "Выход из программы." << std::endl;
                 break;
 
@@ -71,7 +84,7 @@ int main()
                 std::cout << "Неверный выбор. Попробуйте снова." << std::endl;
                 break;
         }
-    } while (choice != 0);
+    } while (choice != 10);
 
     return 0;
 }
