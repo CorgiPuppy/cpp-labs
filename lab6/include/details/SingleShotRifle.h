@@ -1,12 +1,12 @@
-#ifndef PISTOL_H
-#define PISTOL_H
+#ifndef SINGLE_SHOT_RIFLE_H
+#define SINGLE_SHOT_RIFLE_H
 
 #include "Weapon.h"
 
-class Pistol : public Weapon
+class SingleShotRifle : public Weapon
 {
 	public:
-		Pistol() : Weapon("Пистолет", 9.0, 20, 1.5, 1, 1.4, 50, 75, 3)
+		SingleShotRifle() : Weapon("Однозарядная винтовка", 7.62, 1, 2.5, 1, 4.0, 800, 90, 3)
 		{
 			current_ammo = amount_of_rounds;
 		}

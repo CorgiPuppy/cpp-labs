@@ -1,12 +1,12 @@
-#ifndef PISTOL_H
-#define PISTOL_H
+#ifndef PUMP_SHOTGUN_H
+#define PUMP_SHOTGUN_H
 
 #include "Weapon.h"
 
-class Pistol : public Weapon
+class PumpShotgun : public Weapon
 {
 	public:
-		Pistol() : Weapon("Пистолет", 9.0, 20, 1.5, 1, 1.4, 50, 75, 3)
+		PumpShotgun() : Weapon("Помповый дробовик", 12.0, 8, 0.5, 1, 3.5, 30, 70, 1)
 		{
 			current_ammo = amount_of_rounds;
 		}
