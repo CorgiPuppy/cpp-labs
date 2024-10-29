@@ -14,6 +14,13 @@ class Vector
 		int amount_of_modifications;
 
 	public:
+		
+		/*
+		 * Изменение размера вектора
+		 *
+		 * @param temp_capacity временная переменная вместимости
+		 */
+
 		void resize(int temp_capacity)
 		{
 			T* temp_data = new T[temp_capacity];
@@ -26,6 +33,12 @@ class Vector
 			capacity = temp_capacity;
 		}
 
+		/*
+		 * Конструктор класса
+		 *
+		 * @param initial_capacity начальная емкость вектора
+		 */
+
 		Vector(int initial_capacity = Constants::initial_capacity)
 		:
 			size(Constants::initial_size),
@@ -34,21 +47,46 @@ class Vector
 		{
 			data = new T[capacity];	
 		}
-		
+	
+		/*
+		 * Деструктор класса
+		 *
+		 */
+
 		~Vector()
 		{
 			delete [] data;
 		}
+
+		/*
+		 * Проверка на пустоту вектора
+		 *
+		 * @return возвращает правду, если пуст, иначе - ложь
+		 */
 		
 		bool is_empty() const
 		{
 			return size == 0;
 		}
 
+		/*
+		 * Получение размера вектора
+		 *
+		 * @return возвращает размер вектора
+		 */
+
 		int get_size() const
 		{
 			return size;
 		}
+
+		/*
+		 * Получение элемента по его индексу через перегруженный оператор []
+		 *
+		 * @param index индекс вектора
+		 *
+		 * @return возвращает элемент вектора
+		 */
 
 		T& operator[](int index)
 		{
@@ -61,6 +99,12 @@ class Vector
 			return data[index];
 		}
 
+		/*
+		 * Добавление элемента в конец вектора
+		 *
+		 * @param value число, которое добавится в вектор
+		 */
+
 		void push_back(const T& value)
 		{
 			if (size == capacity)
@@ -71,10 +115,15 @@ class Vector
 			amount_of_modifications++;
 			if (amount_of_modifications >= Constants::resize_threshold)
 			{
-				resize(size + size / 2);
-				amount_of_modifications;
+				resize(capacity * 2);
+				amount_of_modifications = 0;
 			}
 		}
+
+		/*
+		 * Удаление последнего элемента из вектора
+		 *
+		 */
 
 		void pop_back()
 		{
@@ -86,14 +135,19 @@ class Vector
 
 			size--;
 
-			amount_of_modifications++;	
-			if (amount_of_modifications >= Constants::resize_threshold)
-			{
-				resize(size - size / 2);
-				amount_of_modifications;
-			}
+			if (size <= (capacity / 4))
+				resize(capacity / 2);
 
 		}
+
+		/*
+		 * Отображение всех элементов вектора
+		 *
+		 * @param os поток, куда записывается вывод
+		 * @param v вектор
+		 *
+		 * @return возвращает поток вывода
+		 */
 
 		friend std::ostream &operator<<(std::ostream &os, const Vector<T>& v)
 		{
@@ -113,12 +167,30 @@ class Vector
 				T* pointer;
 
 			public:
+				/*
+				 * Конструктор класса
+				 *
+				 * @param p указатель на текущий элемент
+				 */
+
 				Iterator(T* p) : pointer(p) {}
 
+				/*
+				 * Перегрузка оператора *
+				 *
+				 * @return возвращает текущий элемент
+				 */
+				 
 				T& operator*()
 				{
 					return *pointer;
 				}
+
+				/*
+				 * Перегрузка оператора ++
+				 *
+				 * @return возвращает следующий элемент
+				 */
 
 				Iterator &operator++()
 				{
@@ -126,16 +198,36 @@ class Vector
 					return *this;
 				}
 
+				/*
+				 * Перегрузка оператора !=
+				 *
+				 * @param it другой элемент
+				 *
+				 * @return возвращает правду, если не равны, иначе - ложь
+				 */
+
 				bool operator!=(const Iterator &it) const
 				{
 					return pointer != it.pointer;
 				}
 		};
 
+		/*
+		 * Итератор, указывающий на начало вектора
+		 *
+		 * @return возвращает итератор начала вектора
+		 */
+		 
 		Iterator begin()
 		{
 			return Iterator(data);
 		}
+
+		/*
+		 * Итератор, указывающий на конец вектора
+		 *
+		 * @return возвращает итератор конца вектора
+		 */
 
 		Iterator end()
 		{
