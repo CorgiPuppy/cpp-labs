@@ -1,13 +1,13 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-#include "include/Constants.h"
-#include "include/Book.h"
+#include "Constants.h"
+#include "Book.h"
 
 class Library
 {
 	private:
-		Book* book[Constants::max_amount_of_books];
+		Book* books[Constants::max_amount_of_books];
 		int amount_of_books;
 
 	public:
@@ -35,6 +35,10 @@ class Library
 			for (int i = 0; i < amount_of_books; i++)
 				std::cout << *books[i] << std::endl;
 		}
+
+		Book* get_book(int index) const { return books[index]; }
+		
+		int get_amount_of_books() const { return amount_of_books; }
 };
 
 #endif
