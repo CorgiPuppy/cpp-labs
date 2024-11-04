@@ -16,6 +16,9 @@ class Book
 		int* ratings;
 		int amount_of_ratings;
 
+		int reading_times[Constants::max_amount_of_ratings];
+		int amount_of_readings;
+
 	public:
 		Book(const char* title, const char* author, const char* genre, int volume, int age_restriction)
 		{
@@ -35,9 +38,38 @@ class Book
 
 		void rate(int rating)
 		{
-			if (amount_of_ratings < 100)
+			if (amount_of_ratings < Constants::max_amount_of_ratings)
 				ratings[amount_of_ratings++] = rating;
 		}
+
+		double get_average_rating()
+		{
+			if (amount_of_ratings == 0) return 0.0;
+			
+			int sum = 0;
+			for (int i = 0; i < amount_of_ratings; i++)
+				sum += ratings[i];
+
+			return static_cast<double>(sum) / amount_of_ratings;
+		}
+
+		void set_reading_time(int time)
+		{
+			reading_times[amount_of_readings++] = time;
+		}
+
+		double get_average_reading_time()
+		{
+			if (amount_of_readings == 0) return 0.0;
+				
+			int total_time = 0;
+			for (int i = 0; i < amount_of_readings; i++)
+				total_time += reading_times[i];
+			
+			return static_cast<double>(total_time) / amount_of_readings;
+		}
+
+		const char* get_title() const { return title; }
 
 		const char* get_genre() const { return genre; }
 
