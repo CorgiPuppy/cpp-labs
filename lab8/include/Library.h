@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include "Book.h"
 
+#include <iostream>
+
 class Library
 {
 	private:
@@ -34,6 +36,19 @@ class Library
 			
 			for (int i = 0; i < amount_of_books; i++)
 				std::cout << *books[i] << std::endl;
+		}
+
+		Book* find_book(int visitor_age, int preferred_volume, const char* preferred_genre)
+		{
+			for (int i = 0; i < amount_of_books; i++)
+				if (books[i]->get_age_restriction() <= visitor_age &&
+                    ((preferred_volume == 0 && books[i]->get_volume() < 100) ||
+                     (preferred_volume == 1 && books[i]->get_volume() >= 100 && books[i]->get_volume() <= 500) ||
+					 (preferred_volume == 2 && books[i]->get_volume() > 500)) &&
+                    strcmp(preferred_genre, books[i]->get_genre()) == 0)
+                    return books[i];
+
+			return nullptr;
 		}
 
 		Book* get_book(int index) const { return books[index]; }
