@@ -51,6 +51,17 @@ class Library
 			return nullptr;
 		}
 
+		void print_statistics()
+		{
+			std::cout << std::endl << "Статистика по книгам:" << std::endl;
+			for (int i = 0; i < amount_of_books; i++)
+			{
+				std::cout << "\tКнига - " << books[i]->get_title() << std::endl;
+				std::cout << "\t\tСредняя оценка - " << books[i]->get_average_rating() << std::endl;
+				std::cout << "\t\tСреднее время чтения - " << books[i]->get_average_reading_time() << " часов" << std::endl;
+			}
+		}
+
 		Book* get_book(int index) const { return books[index]; }
 		
 		int get_amount_of_books() const { return amount_of_books; }
