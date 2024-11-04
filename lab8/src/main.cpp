@@ -15,14 +15,11 @@ int main()
 
     library.show_catalog();
 
-    for (int i = 0; i < library.get_amount_of_books(); i++)
-	{
-        if (visitor.can_read(*library.get_book(i)))
-		{
-            visitor.read_book(i);
-            library.get_book(i)->rate(5);
-        }
-    }
+	Book* found_book = library.find_book(visitor.get_age(), visitor.get_preferred_volume(), visitor.get_preferred_genre());
+	if (found_book)
+		visitor.read_book(*found_book);
+	else
+		std::cout << "Книги, соответствующей заданным критериям, не найдено." << std::endl;
 
     std::cout << visitor << std::endl;
 
