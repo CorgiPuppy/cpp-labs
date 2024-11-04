@@ -1,8 +1,8 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 
-#include "include/Constants.h"
-#include "include/Book.h"
+#include "Constants.h"
+#include "Book.h"
 
 class Visitor
 {
@@ -23,6 +23,7 @@ class Visitor
 			this->reading_speed = reading_speed;
 			this->read_books = new bool[Constants::max_amount_of_books];
 			this->amount_of_read_books = 0;
+		}
 
 		~Visitor()
 		{
@@ -31,16 +32,16 @@ class Visitor
 
 		bool can_read(const Book& book)
 		{
-			if (book.age_restriction > age}
+			if (book.get_age_restriction() > age)
 				return false;
 
-			if ((preferred_volume == 0 && book.volume < 100) ||
-                 (preferred_volume == 1 && book.volume >= 100 && book.volume <= 500) ||
-				 (preferred_volume == 2 && book.volume > 500))
+			if ((preferred_volume == 0 && book.get_volume() < 100) ||
+                 (preferred_volume == 1 && book.get_volume() >= 100 && book.get_volume() <= 500) ||
+				 (preferred_volume == 2 && book.get_volume() > 500))
                 return false;
 
-			if (strcmp(preferred_genre, book.genre) != 0)
-				reutrn false;
+			if (strcmp(preferred_genre, book.get_genre()) != 0)
+				return false;
 
 			return true;
 		}
@@ -56,7 +57,7 @@ class Visitor
 
 		friend std::ostream& operator<<(std::ostream& os, const Visitor& v)
 		{
-			os << std::endl << "Посетитель" << std::endl << "{" << std::endl << "\tВозраст - " << visitor.age << std::endl << "\tЖелаемый жанр - " << visitor.preferred_genre << std::endl << "\tЖелаемый объём - " << visitor.preferred_volume << std::endl << "\tСкорость чтения - " << visitor.reading_speed << std::endl << "}" << std::endl;
+			os << std::endl << "Посетитель" << std::endl << "{" << std::endl << "\tВозраст - " << v.age << std::endl << "\tЖелаемый жанр - " << v.preferred_genre << std::endl << "\tЖелаемый объём - " << v.preferred_volume << std::endl << "\tСкорость чтения - " << v.reading_speed << std::endl << "}" << std::endl;
 			return os;
 		}
 };

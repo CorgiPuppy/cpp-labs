@@ -1,7 +1,9 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-#include "include/Constants.h"
+#include <cstring>
+
+#include "Constants.h"
 
 class Book
 {
@@ -37,15 +39,21 @@ class Book
 				ratings[amount_of_ratings++] = rating;
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const Book& book)
+		const char* get_genre() const { return genre; }
+
+		int get_volume() const { return volume; }
+
+		int get_age_restriction() const { return age_restriction; }
+
+		friend std::ostream& operator<<(std::ostream& os, const Book& b)
 		{
-			os << "Книга { Название: " << book.title << ", Автор: " << book.author << ", Жанр: " << book.genre << ", Объём: " << book.volume << ", Возрастное ограничение: " << book.ageRestriction << ", Оценки: [";
-			for (int i = 0; i < book.ratingsCount; i++)
+			os << std::endl << "Книга" << std::endl << "{" << std::endl << "\tНазвание - " << b.title << std::endl << "\tАвтор - " << b.author << std::endl << "\tЖанр - " << b.genre << std::endl << "\tОбъём - " << b.volume << std::endl << "\tВозрастное ограничение - " << b.age_restriction << std::endl << "\tОценки - [";
+			for (int i = 0; i < b.amount_of_ratings; i++)
 			{
-				os << book.ratings[i];
-				if (i < book.ratingsCount - 1) os << ", ";
+				os << b.ratings[i];
+				if (i < b.amount_of_ratings - 1) os << ", ";
 			}
-			os << "] }";
+			os << "]" << std::endl << "}";
 			return os;
     	}
 };
