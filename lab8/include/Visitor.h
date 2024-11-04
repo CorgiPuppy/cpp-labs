@@ -45,15 +45,23 @@ class Visitor
 
 			return true;
 		}
-		
-		void read_book(int book_index)
+	
+		void read_book(const Book& book)
 		{
-			if (book_index >= 0 && book_index <= 30)
+			if (can_read(book))
 			{
-				read_books[book_index] = true;
-				amount_of_read_books++;
+				int reading_time = book.get_volume() / reading_speed;
+				std::cout << "Чтение книги \"" << book.get_genre() << "\" займет " << reading_time << " часов." << std::endl;
 			}
+			else
+				std::cout << "Вы не можете прочитать эту книгу." << std::endl;
 		}
+
+		int get_age() const { return age; }
+		
+		const char* get_preferred_genre() const { return preferred_genre; }
+
+		int get_preferred_volume() const { return preferred_volume; }
 
 		friend std::ostream& operator<<(std::ostream& os, const Visitor& v)
 		{
