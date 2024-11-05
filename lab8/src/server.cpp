@@ -65,16 +65,10 @@ int main() {
 
 	int server_fd, new_socket;
 	struct sockaddr_in address;
-	int opt = 1;
 	int addrlen = sizeof(address);
 
 	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         std::cerr << "Ошибка при создании сокета" << std::endl;
-        return -1;
-    }
-
-	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
-        std::cerr << "Ошибка при установке опций сокета" << std::endl;
         return -1;
     }
 
