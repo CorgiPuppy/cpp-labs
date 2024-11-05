@@ -16,12 +16,22 @@ class Library
 		int amount_of_visitors;
 
 	public:
+		/*
+		 * Конструктор класса
+		 *
+		 */
+
 		Library()
 		{
 			amount_of_books = 0;
 			visitors = new Visitor*[Constants::max_amount_of_visitors]();
 			amount_of_visitors = 0;
 		}
+
+		/*
+		 * Деструктор класса
+		 *
+		 */
 
 		~Library()
 		{
@@ -33,17 +43,38 @@ class Library
 			delete [] visitors;
 		}
 
+		/*
+		 * Добавление книги
+		 *
+		 * @param title название книги
+		 * @param author имя автора книги
+		 * @param genre название жанра книги
+		 * @param volume объём книги
+		 * @param age_restriction возрастное ограничение для чтения книги
+		 */
+
 		void add_book(const char* title, const char* author, const char* genre, int volume, int age_restriction)
 		{
 			if (amount_of_books < Constants::max_amount_of_books)
 				books[amount_of_books++] = new Book(title, author, genre, volume, age_restriction);
 		}
 
+		/*
+		 * Добавление посетителя
+		 *
+		 * @param visitor посетитель
+		 */
+
 		void add_visitor(Visitor* visitor)
 		{
 			if (amount_of_visitors < Constants::max_amount_of_visitors)
 				visitors[amount_of_visitors++] = visitor;
 		}
+
+		/*
+		 * Показать каталог
+		 *
+		 */
 
 		void show_catalog()
 		{
@@ -52,6 +83,16 @@ class Library
 			for (int i = 0; i < amount_of_books; i++)
 				std::cout << *books[i] << std::endl;
 		}
+
+		/*
+		 * Поиск подходящей книги
+		 *
+		 * @param visitor_age возраст посетителя
+		 * @param preferred_volume желаемый объем книги посетителя
+		 * @param preferred_genre желаемое название жанра книги посетителя
+		 *
+		 * @return возвращает либо подходящую книгу, либо ничего 
+		 */
 
 		Book* find_book(int visitor_age, int preferred_volume, const char* preferred_genre)
 		{
@@ -68,6 +109,11 @@ class Library
 
 			return nullptr;
 		}
+
+		/*
+		 * Вывод в консоль статистики моделирования
+		 *
+		 */
 
 		void print_statistics()
 		{
@@ -115,8 +161,22 @@ class Library
 			}
 		}
 
+		/*
+		 * Получение книги
+		 * 
+		 * @param index индекс книги в каталоге
+		 *
+		 * @return возвращает книгу
+		 */
+
 		Book* get_book(int index) const { return books[index]; }
 		
+		/*
+		 * Получение количества книг
+		 *
+		 * @return возвращает количество книг
+		 */
+
 		int get_amount_of_books() const { return amount_of_books; }
 };
 

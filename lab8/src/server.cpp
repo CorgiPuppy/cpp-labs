@@ -7,6 +7,12 @@
 #include "../include/Visitor.h"
 #include "../include/Book.h"
 
+/*
+ * 30-дневное моделирование
+ *
+ * @param client_socket сокет клиента
+ */
+
 void handle_client(int client_socket)
 {
     Library library;
