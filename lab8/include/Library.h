@@ -72,6 +72,25 @@ class Library
 		}
 
 		/*
+		 * Регистрация нового посетителя
+		 *
+		 * @param visitor посетитель
+		 *
+		 * @return возвращает true, если посетитель был успешно зарегистрирован, иначе false
+		 */
+
+		bool register_visitor(Visitor* visitor)
+		{
+			if (amount_of_visitors < Constants::max_amount_of_visitors)
+			{
+				visitors[amount_of_visitors++] = visitor;
+				return true;
+			}
+
+			return false;
+		}
+
+		/*
 		 * Показать каталог
 		 *
 		 */
@@ -178,6 +197,30 @@ class Library
 		 */
 
 		int get_amount_of_books() const { return amount_of_books; }
+		
+		/*
+		 * Получение количества зарегистрированных посетителей
+		 *
+		 * @return возвращает количество зарегистрированных посетителей
+		 */
+
+		int get_amount_of_registered_visitors() const { return amount_of_visitors; }
+
+		/*
+		 * Получение зарегистрированного посетителя
+		 *
+		 * @param index индекс зарегистрированного посетителя
+		 *
+		 * @return возвращает зарегистрированного посетителя
+		 */
+
+		Visitor* get_registered_visitor(int index)
+		{
+			if (index >= 0 && index < amount_of_visitors)
+				return visitors[index];
+
+			return nullptr;
+		}
 };
 
 #endif

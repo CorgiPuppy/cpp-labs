@@ -16,6 +16,13 @@
 void handle_client(int client_socket)
 {
     Library library;
+
+	for (int i = 0; i < Constants::max_amount_of_visitors; i++)
+	{
+		Visitor* visitor = new Visitor(rand() % Constants::max_age_of_visitors + Constants::min_age_of_visitors, Constants::genre_names[rand() % Constants::amount_of_genres], rand() % Constants::amount_of_preferred_volumes, rand() % (Constants::max_reading_speed - Constants::min_reading_speed + 1) + Constants::min_reading_speed);
+		library.register_visitor(visitor);
+	}
+	
     library.add_book("1984", "Джордж Оруэлл", "Научная фантастика", 328, 16);
     library.add_book("Война и мир", "Лев Толстой", "Исторический роман", 1225, 12);
     library.add_book("Гарри Поттер", "Дж.К. Роулинг", "Фэнтези", 300, 12);
@@ -35,15 +42,16 @@ void handle_client(int client_socket)
 
         for (int v = 0; v < amount_of_visitors_today; v++)
 		{
-            Visitor visitor = Visitor::create_random_visitor();
+			int random_index = rand() % library.get_amount_of_registered_visitors();
+            Visitor* visitor = library.get_registered_visitor(random_index);
 
-			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor.get_age(), visitor.get_preferred_genre(), visitor.get_preferred_volume(), visitor.get_reading_speed());
+			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor->get_age(), visitor->get_preferred_genre(), visitor->get_preferred_volume(), visitor->get_reading_speed());
 			send(client_socket, buffer, strlen(buffer), 0);
 
-            Book* book = library.find_book(visitor.get_age(), visitor.get_preferred_volume(), visitor.get_preferred_genre());
+            Book* book = library.find_book(visitor->get_age(), visitor->get_preferred_volume(), visitor->get_preferred_genre());
             if (book)
 			{
-                int reading_time = book->get_volume() / visitor.get_reading_speed();
+                int reading_time = book->get_volume() / visitor->get_reading_speed();
 
                 snprintf(buffer, sizeof(buffer), "Чтение книги \"%s\" займёт %d часов.\n", book->get_title(), reading_time);
 				send(client_socket, buffer, strlen(buffer), 0);
