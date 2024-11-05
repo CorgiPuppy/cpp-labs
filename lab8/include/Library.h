@@ -72,25 +72,6 @@ class Library
 		}
 
 		/*
-		 * Регистрация нового посетителя
-		 *
-		 * @param visitor посетитель
-		 *
-		 * @return возвращает true, если посетитель был успешно зарегистрирован, иначе false
-		 */
-
-		bool register_visitor(Visitor* visitor)
-		{
-			if (amount_of_visitors < Constants::max_amount_of_visitors)
-			{
-				visitors[amount_of_visitors++] = visitor;
-				return true;
-			}
-
-			return false;
-		}
-
-		/*
 		 * Показать каталог
 		 *
 		 */
