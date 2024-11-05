@@ -8,7 +8,7 @@ namespace Constants
 
 	const int title_size = 100;
 	const int author_size = 100;
-	const int genre_size = 50;
+	const int genre_size = 100;
 	const int max_amount_of_ratings = 100;
 
 	const int max_amount_of_books = 30;
@@ -16,8 +16,8 @@ namespace Constants
 	const int max_age_of_visitors = 100;
 	const int min_age_of_visitors = 10;
 
-	const int amount_of_genres = 6;
-	const char* genre_names[amount_of_genres] = {"Научная фантастика", "Фэнтези", "Исторический роман", "Детектив", "Роман", "Приключения"};
+	const int amount_of_genres = 7;
+	const char* genre_names[amount_of_genres] = {"Научная фантастика", "Фэнтези", "Исторический роман", "Детектив", "Coциально-психологический роман", "Приключения", "Рассказ"};
 
 	const int amount_of_preferred_volumes = 3;
 
