@@ -57,14 +57,14 @@ class Visitor
 				std::cout << "Вы не можете прочитать эту книгу." << std::endl;
 		}
 
-		Visitor* create_random_visitor()
+		static Visitor create_random_visitor()
 		{
 			int age = rand() % Constants::max_age_of_visitors + Constants::min_age_of_visitors; 
 			const char** genres = Constants::genre_names;
 			const char* preferred_genre = genres[rand() % Constants::amount_of_genres];
 			int preferred_volume = rand() % Constants::amount_of_preferred_volumes;
 			int reading_speed = rand() % Constants::max_reading_speed + Constants::min_reading_speed;
-			return new Visitor(age, preferred_genre, preferred_volume, reading_speed);
+			return Visitor(age, preferred_genre, preferred_volume, reading_speed);
 		}
 
 		int get_age() const { return age; }

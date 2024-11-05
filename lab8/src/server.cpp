@@ -28,17 +28,15 @@ void handle_client(int client_socket)
 
         for (int v = 0; v < amount_of_visitors_today; v++)
 		{
-            Visitor* visitor;
-            visitor = visitor->create_random_visitor();
-			library.add_visitor(visitor);
+            Visitor visitor = Visitor::create_random_visitor();
 
-			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor->get_age(), visitor->get_preferred_genre(), visitor->get_preferred_volume(), visitor->get_reading_speed());
+			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor.get_age(), visitor.get_preferred_genre(), visitor.get_preferred_volume(), visitor.get_reading_speed());
 			send(client_socket, buffer, strlen(buffer), 0);
 
-            Book* book = library.find_book(visitor->get_age(), visitor->get_preferred_volume(), visitor->get_preferred_genre());
+            Book* book = library.find_book(visitor.get_age(), visitor.get_preferred_volume(), visitor.get_preferred_genre());
             if (book)
 			{
-                int reading_time = book->get_volume() / visitor->get_reading_speed();
+                int reading_time = book->get_volume() / visitor.get_reading_speed();
 
                 snprintf(buffer, sizeof(buffer), "Чтение книги \"%s\" займёт %d часов.\n", book->get_title(), reading_time);
 				send(client_socket, buffer, strlen(buffer), 0);
@@ -49,15 +47,11 @@ void handle_client(int client_socket)
 
 				snprintf(buffer, sizeof(buffer), "Посетитель читает книгу...\n");
 				send(client_socket, buffer, strlen(buffer), 0);
-
-                delete visitor; 
             } 
 			else
 			{
                 snprintf(buffer, sizeof(buffer), "Не удалось найти подходящую книгу для посетителя.\n");
 				send(client_socket, buffer, strlen(buffer), 0);
-
-                delete visitor;
             }
         }
     }
