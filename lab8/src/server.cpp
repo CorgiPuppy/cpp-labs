@@ -10,9 +10,13 @@
 void handle_client(int client_socket)
 {
     Library library;
-    library.add_book("1984", "George Orwell", "Научная фантастика", 328, 16);
+    library.add_book("1984", "Джордж Оруэлл", "Научная фантастика", 328, 16);
     library.add_book("Война и мир", "Лев Толстой", "Исторический роман", 1225, 12);
-    library.add_book("Гарри Поттер", "Дж.К. Роулинг", "Фэнтези", 300, 10);
+    library.add_book("Гарри Поттер", "Дж.К. Роулинг", "Фэнтези", 300, 12);
+	library.add_book("Обломов", "Иван Гончаров", "Социально-психологический роман", 397, 12);
+	library.add_book("Тайна сна миллионера", "Агата Кристи", "Детектив", 203, 16);
+	library.add_book("Путешествия Гулливера", "Джонатан Свифт", "Приключения", 230, 6);
+	library.add_book("Каштанка", "А.П. Чехов", "Рассказ", 32, 6);
 
     for (int day = Constants::the_first_day; day <= Constants::amount_of_days; day++)
 	{
@@ -35,7 +39,7 @@ void handle_client(int client_socket)
 			{
                 int reading_time = book->get_volume() / visitor->get_reading_speed();
 
-                snprintf(buffer, sizeof(buffer), "Чтение книги \"%s\" займёт %d часов.\n", book->get_genre(), reading_time);
+                snprintf(buffer, sizeof(buffer), "Чтение книги \"%s\" займёт %d часов.\n", book->get_title(), reading_time);
 				send(client_socket, buffer, strlen(buffer), 0);
 
                 book->set_reading_time(reading_time);
