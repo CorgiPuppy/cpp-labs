@@ -17,6 +17,7 @@ void handle_client(int client_socket)
 	library.add_book("Тайна сна миллионера", "Агата Кристи", "Детектив", 203, 16);
 	library.add_book("Путешествия Гулливера", "Джонатан Свифт", "Приключения", 230, 6);
 	library.add_book("Каштанка", "А.П. Чехов", "Рассказ", 32, 6);
+	library.add_book("Скотный двор", "Джордж Оруэлл", "Сатирическая повесть", 416, 12);
 
     for (int day = Constants::the_first_day; day <= Constants::amount_of_days; day++)
 	{
