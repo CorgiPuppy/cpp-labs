@@ -14,11 +14,13 @@ namespace Constants
 
 	const int max_amount_of_books = 30;
 
+	const int max_amount_of_authors = 100;
+
 	const int max_age_of_visitors = 100;
 	const int min_age_of_visitors = 10;
 
-	const int amount_of_genres = 7;
-	const char* genre_names[amount_of_genres] = {"Научная фантастика", "Фэнтези", "Исторический роман", "Детектив", "Coциально-психологический роман", "Приключения", "Рассказ"};
+	const int amount_of_genres = 8;
+	const char* genre_names[amount_of_genres] = {"Научная фантастика", "Фэнтези", "Исторический роман", "Детектив", "Coциально-психологический роман", "Приключения", "Рассказ", "Сатирическая повесть"};
 
 	const int amount_of_preferred_volumes = 3;
 
