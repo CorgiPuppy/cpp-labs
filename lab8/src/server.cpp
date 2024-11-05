@@ -24,12 +24,13 @@ void handle_client(int client_socket)
 		snprintf(buffer, sizeof(buffer), "\nДень %d:\n", day);
 		send(client_socket, buffer, strlen(buffer), 0);
 
-        int amount_of_visitors = rand() % Constants::max_amount_of_visitors + Constants::min_amount_of_visitors;
+        int amount_of_visitors_today = rand() % Constants::max_amount_of_visitors + Constants::min_amount_of_visitors;
 
-        for (int v = 0; v < amount_of_visitors; v++)
+        for (int v = 0; v < amount_of_visitors_today; v++)
 		{
             Visitor* visitor;
-			visitor = visitor->create_random_visitor();
+            visitor = visitor->create_random_visitor();
+			library.add_visitor(visitor);
 
 			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor->get_age(), visitor->get_preferred_genre(), visitor->get_preferred_volume(), visitor->get_reading_speed());
 			send(client_socket, buffer, strlen(buffer), 0);
