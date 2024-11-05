@@ -3,6 +3,7 @@
 
 #include "Constants.h"
 #include "Book.h"
+#include "Visitor.h"
 
 #include <iostream>
 
@@ -11,23 +12,37 @@ class Library
 	private:
 		Book* books[Constants::max_amount_of_books];
 		int amount_of_books;
+		Visitor** visitors;
+		int amount_of_visitors;
 
 	public:
 		Library()
 		{
 			amount_of_books = 0;
+			visitors = new Visitor*[Constants::max_amount_of_visitors]();
+			amount_of_visitors = 0;
 		}
 
 		~Library()
 		{
 			for (int i = 0; i < amount_of_books; i++)
 				delete books[i];
+
+			for (int i = 0; i < amount_of_visitors; i++)
+				delete visitors[i];
+			delete [] visitors;
 		}
 
 		void add_book(const char* title, const char* author, const char* genre, int volume, int age_restriction)
 		{
-			if (amount_of_books < 30)
+			if (amount_of_books < Constants::max_amount_of_books)
 				books[amount_of_books++] = new Book(title, author, genre, volume, age_restriction);
+		}
+
+		void add_visitor(Visitor* visitor)
+		{
+			if (amount_of_visitors < Constants::max_amount_of_visitors)
+				visitors[amount_of_visitors++] = visitor;
 		}
 
 		void show_catalog()
