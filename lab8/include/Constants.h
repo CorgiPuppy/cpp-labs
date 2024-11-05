@@ -3,6 +3,9 @@
 
 namespace Constants
 {
+	const int PORT = 8080;
+	const int buffer_size = 1024;
+
 	const int title_size = 100;
 	const int author_size = 100;
 	const int genre_size = 50;
