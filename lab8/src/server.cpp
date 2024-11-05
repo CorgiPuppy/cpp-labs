@@ -64,11 +64,12 @@ void handle_client(int client_socket)
 int main() {
     srand((time(0)));
 
-	int server_fd, new_socket;
-	struct sockaddr_in address;
-	int addrlen = sizeof(address);
-
-	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+    
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+	{
         std::cerr << "Ошибка при создании сокета" << std::endl;
         return -1;
     }
@@ -77,19 +78,22 @@ int main() {
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(Constants::PORT);
 
-    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
+	{
         std::cerr << "Ошибка при привязке" << std::endl;
         return -1;
     }
 
-    if (listen(server_fd, 3) < 0) {
+    if (listen(server_fd, Constants::backlog) < 0)
+	{
         std::cerr << "Ошибка в прослушивании" << std::endl;
         return -1;
     }
 
     std::cout << "Сервер запущен. Ожидание подключения клиента..." << std::endl;
 
-    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
+    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0)
+	{
         std::cerr << "Ошибка при подключении клиента" << std::endl;
         return -1;
     }
