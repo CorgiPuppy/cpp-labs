@@ -61,7 +61,10 @@ class Library
                      (preferred_volume == 1 && books[i]->get_volume() >= 100 && books[i]->get_volume() <= 500) ||
 					 (preferred_volume == 2 && books[i]->get_volume() > 500)) &&
                     strcmp(preferred_genre, books[i]->get_genre()) == 0)
+				{
+					books[i]->increment_amount_of_borrows();
                     return books[i];
+				}
 
 			return nullptr;
 		}
@@ -74,6 +77,41 @@ class Library
 				std::cout << "\tКнига - " << books[i]->get_title() << std::endl;
 				std::cout << "\t\tСредняя оценка - " << books[i]->get_average_rating() << std::endl;
 				std::cout << "\t\tСреднее время чтения - " << books[i]->get_average_reading_time() << " часов" << std::endl;
+				std::cout << "\t\tКоличество взятий - " << books[i]->get_amount_of_borrows() << std::endl;
+			}
+
+			int max_amount_of_authors = Constants::max_amount_of_authors;
+			char* authors[max_amount_of_authors] = { nullptr };
+			int amount_of_borrows_author[max_amount_of_authors] = { 0 };
+			int amount_of_authors = 0;
+			for (int i = 0; i < amount_of_books; i++)
+			{
+				const char* author = books[i]->get_author();
+				bool found = false;
+
+				for (int j = 0; j < amount_of_authors; j++)
+				{
+					if (strcmp(authors[j], author) == 0)
+					{
+						amount_of_borrows_author[j] += books[i]->get_amount_of_borrows();
+						found = !found;
+						break;
+					}
+				}
+
+				if (!found && amount_of_authors < max_amount_of_authors)
+				{
+					authors[amount_of_authors] = strdup(author);
+					amount_of_borrows_author[amount_of_authors] = books[i]->get_amount_of_borrows();
+					amount_of_authors++;
+				}
+			}
+
+			std::cout << std::endl << "\tКоличество взятий книг по авторам:" << std::endl;
+			for (int i = 0; i < amount_of_authors; i++)
+			{
+				std::cout << "\t\tАвтор - " << authors[i] << std::endl << "\t\t\tВзятий книг - " << amount_of_borrows_author[i] << std::endl;
+				free(authors[i]);
 			}
 		}
 
