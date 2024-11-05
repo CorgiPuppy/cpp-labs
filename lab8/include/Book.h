@@ -18,6 +18,7 @@ class Book
 
 		int reading_times[Constants::max_amount_of_ratings];
 		int amount_of_readings;
+		int amount_of_borrows;
 
 	public:
 		Book(const char* title, const char* author, const char* genre, int volume, int age_restriction)
@@ -29,6 +30,7 @@ class Book
 			this->age_restriction = age_restriction;
 			this->ratings = new int[Constants::max_amount_of_ratings];	
 			this->amount_of_ratings = 0;
+			this->amount_of_borrows = 0;
 		}
 		
 		~Book()
@@ -36,6 +38,8 @@ class Book
 			delete [] ratings;
 		}
 
+		void increment_amount_of_borrows() { amount_of_borrows++; }
+		
 		void rate(int rating)
 		{
 			if (amount_of_ratings < Constants::max_amount_of_ratings)
@@ -68,6 +72,10 @@ class Book
 			
 			return static_cast<double>(total_time) / amount_of_readings;
 		}
+
+		int get_amount_of_borrows() const { return amount_of_borrows; }
+	
+		const char* get_author() const { return author; }
 
 		const char* get_title() const { return title; }
 
