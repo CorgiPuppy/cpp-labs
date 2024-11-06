@@ -25,25 +25,34 @@ void handle_client(int client_socket)
 	library.add_book("Каштанка", "А.П. Чехов", "Рассказ", 32, 6);
 	library.add_book("Скотный двор", "Джордж Оруэлл", "Сатирическая повесть", 416, 12);
 	
+	for (int i = 0; i < 5; i++)
+	{
+		Visitor* visitor = new Visitor(rand() % Constants::max_age_of_visitors + Constants::min_age_of_visitors, 
+			Constants::genre_names[rand() % Constants::amount_of_genres], rand() % Constants::amount_of_preferred_volumes,
+			rand() % (Constants::max_reading_speed - Constants::min_reading_speed + 1) + Constants::min_reading_speed);
+		library.register_visitor(visitor);
+	}
+
     for (int day = Constants::the_first_day; day <= Constants::amount_of_days; day++)
 	{
 		char buffer[Constants::buffer_size] = {0};
 		snprintf(buffer, sizeof(buffer), "\nДень %d:\n", day);
 		send(client_socket, buffer, strlen(buffer), 0);
 
-        int amount_of_visitors_today = rand() % Constants::max_amount_of_visitors + Constants::min_amount_of_visitors;
+        int selected_count;
+        Visitor** todays_visitors = library.get_random_visitors(selected_count);
 
-        for (int v = 0; v < amount_of_visitors_today; v++)
+        for (int v = 0; v < selected_count; v++)
 		{	
-			Visitor visitor = Visitor::create_random_visitor();
-			
-			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor.get_age(), visitor.get_preferred_genre(), visitor.get_preferred_volume(), visitor.get_reading_speed());
+			Visitor* visitor = todays_visitors[v];
+
+			snprintf(buffer, sizeof(buffer), "\nПосетитель:\n\tВозраст - %d\n\tЖелаемый жанр - %s\n\tЖелаемый объём - %d\n\tСкорость чтения - %d\n", visitor->get_age(), visitor->get_preferred_genre(), visitor->get_preferred_volume(), visitor->get_reading_speed());
 			send(client_socket, buffer, strlen(buffer), 0);
 
-            Book* book = library.find_book(visitor.get_age(), visitor.get_preferred_volume(), visitor.get_preferred_genre());
+            Book* book = library.find_book(visitor->get_age(), visitor->get_preferred_volume(), visitor->get_preferred_genre());
             if (book)
 			{
-                int reading_time = book->get_volume() / visitor.get_reading_speed();
+                int reading_time = book->get_volume() / visitor->get_reading_speed();
 
                 snprintf(buffer, sizeof(buffer), "Чтение книги \"%s\" займёт %d часов.\n", book->get_title(), reading_time);
 				send(client_socket, buffer, strlen(buffer), 0);
@@ -61,6 +70,16 @@ void handle_client(int client_socket)
 				send(client_socket, buffer, strlen(buffer), 0);
             }
         }
+
+		if (rand() % 100 < 60)
+        {
+            Visitor* new_visitor = new Visitor(rand() % Constants::max_age_of_visitors + Constants::min_age_of_visitors,
+                Constants::genre_names[rand() % Constants::amount_of_genres], rand() % Constants::amount_of_preferred_volumes,
+                rand() % (Constants::max_reading_speed - Constants::min_reading_speed + 1) + Constants::min_reading_speed);
+            library.register_visitor(new_visitor);
+        }
+
+        delete[] todays_visitors;
     }
 
     library.print_statistics();

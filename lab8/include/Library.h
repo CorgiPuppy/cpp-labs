@@ -14,6 +14,8 @@ class Library
 		int amount_of_books;
 		Visitor** visitors;
 		int amount_of_visitors;
+		Visitor* registered_visitors[Constants::max_amount_of_visitors];
+		int amount_of_registered_visitors;
 
 	public:
 		/*
@@ -25,7 +27,7 @@ class Library
 		{
 			amount_of_books = 0;
 			visitors = new Visitor*[Constants::max_amount_of_visitors]();
-			amount_of_visitors = 0;
+			amount_of_registered_visitors = 0;
 		}
 
 		/*
@@ -41,6 +43,9 @@ class Library
 			for (int i = 0; i < amount_of_visitors; i++)
 				delete visitors[i];
 			delete [] visitors;
+			
+			for (int i = 0; i < amount_of_visitors; i++)
+				delete registered_visitors[i];
 		}
 
 		/*
@@ -69,6 +74,41 @@ class Library
 		{
 			if (amount_of_visitors < Constants::max_amount_of_visitors)
 				visitors[amount_of_visitors++] = visitor;
+		}
+
+		/*
+		 * Регистрация нового посетителя
+		 *
+		 * @param visitor новый посетитель
+		 */
+
+		void register_visitor(Visitor* visitor)
+		{
+			if (amount_of_registered_visitors < Constants::max_amount_of_visitors)
+			{
+				registered_visitors[amount_of_registered_visitors++] = visitor;
+			}
+		}
+
+		/*
+		 * Получение случайного набора посетителей
+		 *
+		 * @param amount количество посетителей
+		 * @return массив случайных посетителей
+		 */
+
+		Visitor** get_random_visitors(int& selected_count)
+		{
+			selected_count = rand() % (Constants::max_amount_of_visitors) + 1;
+			Visitor** selected_visitors = new Visitor*[selected_count];
+
+			for (int i = 0; i < selected_count; i++)
+			{
+				int index = rand() % amount_of_registered_visitors; 
+				selected_visitors[i] = registered_visitors[index];
+			}
+
+			return selected_visitors;
 		}
 
 		/*
