@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 
 #include "../include/QuadraticEquation.h"
 #include "../include/Complex.h"
@@ -13,7 +14,8 @@ int main()
 
     std::vector<QuadraticEquation> equations;
     
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N; i++)
+	{
         double a_r, a_i, b_r, b_i, c_r, c_i;
         std::cout << "Коэффициенты уравнения " << i + 1 << " (a, b, c) (реальная и мнимая части через пробел):\n";
         std::cin >> a_r >> a_i >> b_r >> b_i >> c_r >> c_i;
@@ -33,13 +35,14 @@ int main()
 	std::cin >> root_real >> root_imag;
 
 	Complex user_root(root_real, root_imag);
-	for (int i = 0; i < N; i++)
-	{
-		if (equations[i].has_root(user_root))
-			std::cout << "Число " << user_root << " является корнем уравнения " << i + 1 << "." << std::endl;
-		else	
-			std::cout << "Число " << user_root << " не является корнем уравнения " << i + 1 << "." << std::endl;
-	}
 
+	for (auto& eq : equations)
+	{
+		if (std::find_if(eq.get_roots().begin(), eq.get_roots().end(), [&](const Complex& root)
+					{ return root == user_root; }) != eq.get_roots().end())
+		{
+			std::cout << "Корень " << user_root << " найден в уравнении " << eq << std::endl;
+		}
+	}
     return 0;
 }
