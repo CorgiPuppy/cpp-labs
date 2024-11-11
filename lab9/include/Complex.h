@@ -43,6 +43,11 @@ class Complex
 			return Complex(r * std::cos(theta), r * std::sin(theta));
 		}
 
+		bool operator==(const Complex& second) const
+		{
+			return (real == second.real) && (imag == second.imag);
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const Complex& c)
 		{
 			if (c.imag >= 0)
