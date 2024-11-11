@@ -31,10 +31,9 @@ class QuadraticEquation
 			calculate_roots();
 		}
 
-		bool has_root(const Complex& number) const 
+		std::vector<Complex> get_roots() const
 		{
-			return (root_1.real == number.real && root_1.imag == number.imag) ||
-                   (root_2.real == number.real && root_2.imag == number.imag);
+			return {root_1, root_2};
 		}
 
 		const Complex get_root_1() const { return root_1; }
