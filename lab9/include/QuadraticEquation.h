@@ -6,12 +6,18 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <set>
 
 class QuadraticEquation
 {
 	private:
 		Complex a, b, c;
 		Complex root_1, root_2;
+		
+		/*
+		 * Вычисление дискриминанта и корней квадратного уравнения
+		 *
+		 */
 
 		void calculate_roots()
 		{
@@ -22,6 +28,14 @@ class QuadraticEquation
 		}
 
 	public:
+		/*
+		 * Конструктор класса
+		 *
+		 * @param a коэффициент при x^2
+		 * @param b коэффициент при x
+		 * @param c свободный коэффициент
+		 */
+
 		QuadraticEquation
 		(
 			Complex a,
@@ -35,36 +49,126 @@ class QuadraticEquation
 			calculate_roots();
 		}
 
+		/*
+		 * Проверка на наличие такого же корня, что и заданный
+		 *
+		 * @param it заданное число
+		 * @return возвращает true, если есть корень, иначе - false
+		 */
+
 		bool has_root(const Complex& it) const
 		{
-			if (std::find_if(
-					get_roots().begin(), get_roots().end(),
-					[&it](const Complex& root)
-					{ 
-						const double epsilon = 1e-9;	
-						return ((root.real - it.real) < epsilon) && ((root.imag - it.imag) < epsilon);
-					}
-				) != get_roots().end())
-				return true;
+			/*
+			const double epsilon = 1e-9;
+			for (Complex& root : get_roots())
+				if ((std::fabs(root.real - it.real) < epsilon) &&
+                    (std::fabs(root.imag - it.imag) < epsilon))                   			return true;
+
 			return false;
+			*/
+			std::vector<Complex> roots = get_roots();
+			bool result = std::find_if(
+								roots.begin(), roots.end(),
+								[&it](const auto& root)
+								{
+									const double epsilon = 1e-9;
+									return (std::fabs(root.real - it.real) < epsilon) &&
+									       (std::fabs(root.real - it.real) < epsilon);
+								}
+							) != roots.end();
+			return result;
 		}
+		
+		/*
+		 * Подсчёт количества корней, меньших по модуль заданного
+		 *
+		 * @param it заданное число для сравнения
+		 * @return количество корней, удовлетворяющих условию
+		 */
 
 		int count_smaller_roots(const Complex& it) const
 		{
+			/*
+			int count = 0;
+			for (Complex& root : get_roots())
+				if (root.abs() < it.abs())
+					count++;
+
+			return count;
+			*/
+			std::vector<Complex> roots = get_roots();	
 			return std::count_if(
-                       get_roots().begin(), get_roots().end(),
+                       roots.begin(), roots.end(),
                        [&it](const Complex& root)
 					   {
                            return std::fabs(root.real) < std::fabs(it.real);
                        }
                    );
+			
 		}
-	
+		
+		static std::vector<Complex> get_unique_roots(const std::vector<QuadraticEquation>& equations)
+		{
+			std::set<Complex> unique_roots;
+
+			for (const QuadraticEquation& equation : equations)
+			{
+				std::vector<Complex> roots = equation.get_roots();
+				for (Complex root : roots)
+					unique_roots.insert(root);
+			}
+			
+			return std::vector<Complex>(unique_roots.begin(), unique_roots.end());
+		}
+
+		Complex sum_of_roots() const
+		{
+			return root_1 + root_2;
+		}
+
+		static void sort_equations_via_sum(std::vector<QuadraticEquation>& equations)
+		{
+			std::sort(
+				equations.begin(), equations.end(),
+				[](const QuadraticEquation& qe_1, const QuadraticEquation& qe_2)
+				{
+					return qe_1.sum_of_roots() < qe_2.sum_of_roots();
+				}
+			);
+		}
+
+		/*
+		 * Геттер вектора корней
+		 *
+		 * @return возвращает вектора корней
+		 */
+
 		std::vector<Complex> get_roots() const { return {root_1, root_2}; };
+
+		/*
+		 * Геттер первого корня
+		 *
+		 * @return возвращает первый корень
+		 */
 
 		const Complex get_root_1() const { return root_1; }
 
+		/*
+		 * Геттер второго корня
+		 *
+		 * @return возвращает второй корень
+		 */
+
 		const Complex get_root_2() const { return root_2; }
+
+		/*
+		 * Вывод в поток характеристик уравнения
+		 *
+		 * @param os поток, в который записывается характеристика
+		 * @param qe квадратное уравнение
+		 *
+		 * @return возвращает характеристику корня
+		 */
 
 		friend std::ostream& operator<<(std::ostream& os, const QuadraticEquation& qe)
 		{

@@ -10,25 +10,64 @@ class Complex
 		double imag;
 
 	public:
+		/*
+		 * Конструктор класса
+		 *
+		 * @param r вещественная часть
+		 * @param i мнимая часть
+		 */
+
 		Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {}
 
-		Complex operator+(const Complex& second)
+		/*
+		 * Перегруженный оператор +
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает сумму чисел
+		 */
+
+		Complex operator+(const Complex& second) const
 		{
 			return Complex(real + second.real, imag + second.imag);
 		}
 
-		Complex operator-(const Complex& second)
+		/*
+		 * Перегруженный оператор -
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает разность чисел
+		 */
+
+		Complex operator-(const Complex& second) const
 		{
 			return Complex(real - second.real, imag - second.imag);
 		}
 
-		Complex operator*(const Complex& second)
+		/*
+		 * Перегруженный оператор *
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает произведение чисел
+		 */
+
+		Complex operator*(const Complex& second) const
 		{
 			return Complex(real * second.real - imag * second.imag,
                            real * second.imag + imag * second.real);
         }
 
-		Complex operator/(const Complex& second)
+		/*
+		 * Перегруженный оператор /
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает частное чисел
+		 */
+
+		Complex operator/(const Complex& second) const
 		{
 			double denominator = (second.real * second.real + second.imag * second.imag);	
 
@@ -36,17 +75,37 @@ class Complex
                            (imag * second.real - real * second.imag) / denominator);
 		}
 
+		/*
+		 * Расчёт извелечения корня комплексного числа
+		 *
+		 * @return возвращает корень комплексного числа 
+		 */
+
 		Complex sqrt()
 		{
 			double r = std::sqrt(std::sqrt(real * real + imag * imag));
-			double theta = 0.5 * std::atan2(imag, real);
-			return Complex(r * std::cos(theta), r * std::sin(theta));
+			double phi = 0.5 * std::atan2(imag, real);
+			return Complex(r * std::cos(phi), r * std::sin(phi));
 		}
+
+		/*
+		 * Расчёт модуля комплексного числа
+		 *
+		 * @return возвращает модуль комплексного числа
+		 */
 
 		double abs() const
 		{
 			return std::sqrt(real * real + imag * imag);
 		}
+
+		/*
+		 * Перегруженный оператор ==
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает true, если числа равны, иначе - false
+		 */
 
 		bool operator==(const Complex& second) const
 		{
@@ -54,10 +113,27 @@ class Complex
 			return ((real - second.real) < epsilon) && ((imag - second.imag) < epsilon);
 		}
 
+		/*
+		 * Перегруженный оператор <
+		 *
+		 * @param second второе число
+		 *
+		 * @return возвращает true, если число меньше заданного, иначе - false
+		 */
+
 		bool operator<(const Complex& second) const
 		{
 			return ((real < second.real) && (imag < second.imag));
 		}
+
+		/*
+		 * Перегруженная функция вывода в поток
+		 *
+		 * @param os поток, в который выводится характеристика
+		 * @param c корень уравнения
+		 *
+		 * @return возвращает характерику корня
+		 */
 
 		friend std::ostream& operator<<(std::ostream& os, const Complex& c)
 		{

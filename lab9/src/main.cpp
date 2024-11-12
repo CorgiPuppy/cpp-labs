@@ -48,37 +48,36 @@ int main()
 	std::cin >> root_real >> root_imag;
 
 	Complex user_root(root_real, root_imag);
-	bool found = false;
-	for (const auto& equation : equations)
+
+	for (QuadraticEquation& equation : equations)
 	{
 		if (equation.has_root(user_root))
-		{
-			found = true;
-			break;
-		}
+			std::cout << "Корень " << user_root << " есть в уравнении: " << equation << std::endl;
+		else	
+			std::cout << "Корня " << user_root << " нет в уравнении: " << equation << std::endl;
 	}
-	if (found)
-		std::cout << "Заданное число является корнем одного из уравнений." << std::endl;
-	else
-		std::cout << "Заданное число не является корнем ни одного из уравнений." << std::endl;
-/*
+
 	double root_real2, root_imag2;
-	std::cout << "Введите число для проверки наличия среди корней (реальная и мнимая части через пробел):" << std::endl;
+	std::cout << "Введите число для сравнения с корнями уравнений (реальная и мнимая части через пробел):" << std::endl;
 	std::cin >> root_real2 >> root_imag2;
 
 	Complex smaller_root(root_real2, root_imag2);
-	for (QuadraticEquation& equation : equations)
-	{
-		int count = equation.count_smaller_roots(smaller_root);
 
-		std::cout << "Количество - " << count << std::endl;
-	}
-*/
-    std::vector<Complex> unique_roots = get_unique_roots(equations);
+	int count = 0;
+	for (QuadraticEquation& equation : equations)
+		count += equation.count_smaller_roots(smaller_root);
+
+	std::cout << "Количество корней, меньших заданного - " << count << std::endl;
+
+    std::vector<Complex> unique_roots = QuadraticEquation::get_unique_roots(equations);
     std::cout << "Уникальные корни:" << std::endl;
-    for (const Complex& root : unique_roots) {
+    for (Complex& root : unique_roots) {
         std::cout << root << std::endl;
     }
+	
+	QuadraticEquation::sort_equations_via_sum(equations);
+	std::cout << "Сортировка уравнений по сумме корней уравнений:" << std::endl;
+	std::copy(equations.begin(), equations.end(), std::ostream_iterator<QuadraticEquation>(std::cout, "\n"));
 
     return 0;
 }
