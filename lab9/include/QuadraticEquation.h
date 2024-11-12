@@ -3,6 +3,10 @@
 
 #include "Complex.h"
 
+#include <algorithm>
+#include <iterator>
+#include <vector>
+
 class QuadraticEquation
 {
 	private:
@@ -31,10 +35,33 @@ class QuadraticEquation
 			calculate_roots();
 		}
 
-		std::vector<Complex> get_roots() const
+		bool has_root(const Complex& it) const
 		{
-			return {root_1, root_2};
+			if (std::find_if(
+                    get_roots().begin(), get_roots().end(),
+					[&it](const Complex& root)
+					{ 
+						const double epsilon = 1e-9;	
+						return ((root.real - it.real) < epsilon) &&
+                               ((root.imag - it.imag) < epsilon);
+					}
+				) != get_roots().end())
+				return true;
+			return false;
 		}
+
+		int count_smaller_roots(const Complex& it) const
+		{
+			return std::count_if(
+                       get_roots().begin(), get_roots().end(),
+                       [&it](const Complex& root)
+					   {
+                           return std::fabs(root.real) < std::fabs(it.real);
+                       }
+                   );
+		}
+	
+		std::vector<Complex> get_roots() const { return {root_1, root_2}; };
 
 		const Complex get_root_1() const { return root_1; }
 

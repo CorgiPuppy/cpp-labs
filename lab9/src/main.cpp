@@ -2,9 +2,22 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <set>
 
 #include "../include/QuadraticEquation.h"
 #include "../include/Complex.h"
+
+std::vector<Complex> get_unique_roots(const std::vector<QuadraticEquation>& equations) {
+    std::set<Complex> unique_roots; 
+
+    for (const auto& equation : equations) {
+        unique_roots.insert(equation.get_root_1());
+        unique_roots.insert(equation.get_root_2());
+    }
+
+    std::vector<Complex> roots_vector(unique_roots.begin(), unique_roots.end());
+    return roots_vector;
+}
 
 int main()
 {	
@@ -35,14 +48,37 @@ int main()
 	std::cin >> root_real >> root_imag;
 
 	Complex user_root(root_real, root_imag);
-
-	for (auto& eq : equations)
+	bool found = false;
+	for (const auto& equation : equations)
 	{
-		if (std::find_if(eq.get_roots().begin(), eq.get_roots().end(), [&](const Complex& root)
-					{ return root == user_root; }) != eq.get_roots().end())
+		if (equation.has_root(user_root))
 		{
-			std::cout << "Корень " << user_root << " найден в уравнении " << eq << std::endl;
+			found = true;
+			break;
 		}
 	}
+	if (found)
+		std::cout << "Заданное число является корнем одного из уравнений." << std::endl;
+	else
+		std::cout << "Заданное число не является корнем ни одного из уравнений." << std::endl;
+/*
+	double root_real2, root_imag2;
+	std::cout << "Введите число для проверки наличия среди корней (реальная и мнимая части через пробел):" << std::endl;
+	std::cin >> root_real2 >> root_imag2;
+
+	Complex smaller_root(root_real2, root_imag2);
+	for (QuadraticEquation& equation : equations)
+	{
+		int count = equation.count_smaller_roots(smaller_root);
+
+		std::cout << "Количество - " << count << std::endl;
+	}
+*/
+    std::vector<Complex> unique_roots = get_unique_roots(equations);
+    std::cout << "Уникальные корни:" << std::endl;
+    for (const Complex& root : unique_roots) {
+        std::cout << root << std::endl;
+    }
+
     return 0;
 }

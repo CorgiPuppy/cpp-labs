@@ -43,9 +43,20 @@ class Complex
 			return Complex(r * std::cos(theta), r * std::sin(theta));
 		}
 
+		double abs() const
+		{
+			return std::sqrt(real * real + imag * imag);
+		}
+
 		bool operator==(const Complex& second) const
 		{
-			return (real == second.real) && (imag == second.imag);
+			const double epsilon = 1e-9;
+			return ((real - second.real) < epsilon) && ((imag - second.imag) < epsilon);
+		}
+
+		bool operator<(const Complex& second) const
+		{
+			return ((real < second.real) && (imag < second.imag));
 		}
 
 		friend std::ostream& operator<<(std::ostream& os, const Complex& c)
