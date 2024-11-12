@@ -38,12 +38,11 @@ class QuadraticEquation
 		bool has_root(const Complex& it) const
 		{
 			if (std::find_if(
-                    get_roots().begin(), get_roots().end(),
+					get_roots().begin(), get_roots().end(),
 					[&it](const Complex& root)
 					{ 
 						const double epsilon = 1e-9;	
-						return ((root.real - it.real) < epsilon) &&
-                               ((root.imag - it.imag) < epsilon);
+						return ((root.real - it.real) < epsilon) && ((root.imag - it.imag) < epsilon);
 					}
 				) != get_roots().end())
 				return true;
