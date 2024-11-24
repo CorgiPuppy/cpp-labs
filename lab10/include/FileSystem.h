@@ -72,12 +72,13 @@ class FileSystem
 			}
 		}
 
-		void create_directory(const std::string& dir_name)
+		void create_directory(const std::string& dir_name, const std::string& parent_dir_name = "")
 		{
 			if (directories_length == directories_capacity)
 				resize();
 
-			directories[directories_length++] = new Directory(dir_name);
+			Directory* parent = parent_dir_name.empty() ? nullptr : find_directory(parent_dir_name);
+			directories[directories_length++] = new Directory(dir_name, parent);
 			std::cout << "Директория создана - " << dir_name << std::endl;
 		}
 

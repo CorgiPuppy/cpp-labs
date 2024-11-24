@@ -6,7 +6,8 @@
 class Directory : public FileSystemObject
 {
 	private:
-		std::string name;
+		std::string name;	
+		Directory* parent;
 		FileSystemObject** objects;
 		int objects_length;
 		int objects_capacity;
@@ -24,11 +25,12 @@ class Directory : public FileSystemObject
 		}
 
 	public:
-		explicit Directory(const std::string& n)
+		explicit Directory(const std::string& n, Directory* p = nullptr)
 		:
 			name(n),
+			parent(p),
 			objects_length(0),
-			objects_capacity(0)
+			objects_capacity(2)
 		{
 			objects = new FileSystemObject*[objects_capacity];
 		}
@@ -74,6 +76,8 @@ class Directory : public FileSystemObject
 		FileSystemObject** get_objects() const { return objects; }
 
 		int get_objects_length() const { return objects_length; }
+
+		Directory* get_parent() const { return parent; }
 };
 
 #endif
