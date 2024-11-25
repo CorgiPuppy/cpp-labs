@@ -179,6 +179,7 @@ void commandLoop(FileSystem& fs)
 int main() {
     FileSystem fs;
     std::thread inputThread(commandLoop, std::ref(fs));
-    inputThread.join(); // Ждем завершения потока ввода команд
+    inputThread.join();
+
     return 0;
 }
