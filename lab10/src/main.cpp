@@ -1,7 +1,7 @@
 #include "../include/FileSystem.h"
 
 void commandLoop(FileSystem& fs)
-{	
+{
 	std::cout << "\tВведите " << Colors::yellow << "команду" << Colors::reset << ", чтобы начать. " << std::endl << "\tНапишите " << Colors::green << "'help'" << Colors::reset << ", чтобы увидеть список возможных команд." << std::endl;
 
     std::string command;
@@ -20,7 +20,7 @@ void commandLoop(FileSystem& fs)
         iss >> action;
 
         if (action == "create_dir")
-		{
+        {
             iss >> name;
             std::thread([&fs, name]()
 			{
