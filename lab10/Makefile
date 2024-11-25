@@ -8,7 +8,7 @@ SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(TARGET_DIR)/%.o, $(SRC))
 
 CPPC := g++
-CPPFLAGS := -Wall
+CPPFLAGS := -lpthread -Wall
 
 .PHONY: all
 

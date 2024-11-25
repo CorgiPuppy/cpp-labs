@@ -2,82 +2,156 @@
 #define DIRECTORY_H
 
 #include "FileSystemObject.h"
+#include "File.h"
+
+#include <iostream>
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <regex>
+#include <vector>
 
 class Directory : public FileSystemObject
 {
 	private:
-		std::string name;	
+		std::string name;
 		Directory* parent;
-		FileSystemObject** objects;
-		int objects_length;
-		int objects_capacity;
-
-		void resize()
-		{
-			objects_capacity *= 2;
-			FileSystemObject** temp_objects = new FileSystemObject*[objects_capacity];
-			
-			for (int i = 0; i < objects_length; i++)
-				temp_objects[i] = objects[i];
-
-			delete [] objects;
-			objects = temp_objects;
-		}
+		std::map<std::string, std::shared_ptr<FileSystemObject>> children;
 
 	public:
-		explicit Directory(const std::string& n, Directory* p = nullptr)
-		:
-			name(n),
-			parent(p),
-			objects_length(0),
-			objects_capacity(2)
-		{
-			objects = new FileSystemObject*[objects_capacity];
-		}
-		
-		~Directory()
-		{
-			for (int i = 0; i < objects_length; i++)
-				delete objects[i];
+		Directory(const std::string& n, Directory* p = nullptr) : name(n), parent(p) {}
 
-			delete [] objects;
+		void add_child(const std::shared_ptr<FileSystemObject>& child)
+		{
+			auto directory = dynamic_cast<Directory*>(child.get());
+
+			if (directory)
+				directory->parent = this;
+
+			children[child->get_name()] = child;
+		}
+
+		void remove_child(const std::string& child_name)
+		{
+			if (children.count(child_name) > 0)
+			{
+				if (dynamic_cast<Directory*>(children[child_name].get()) &&
+                    !static_cast<Directory*>(children[child_name].get())->get_children().empty())
+					throw std::runtime_error("Нельзя удалить папку, содержащую файлы либо папки.");
+
+				children.erase(child_name);
+			}
+			else
+				throw std::runtime_error("Объект не найден.");
+		}
+
+		void clear()
+		{
+			for (auto& [child_name, child_object] : children)
+				if (Directory* directory = dynamic_cast<Directory*>(child_object.get()))
+					directory->clear();
+
+			children.clear();
+		}
+
+		void show_tree(int depth = 0)
+		{
+			std::cout << std::string(depth, '-') << name << std::endl;
+			
+			for (const auto& [_, child] : children)
+			{
+				if (auto dir = dynamic_cast<Directory*>(child.get()))
+					dir->show_tree(depth + 1);
+				else
+					std::cout << std::string(depth + 1, '-') << child->get_name() << std::endl;
+			}
+		}
+
+		std::shared_ptr<FileSystemObject> find_child(const std::string& child_name)
+		{
+			return children.count(child_name) > 0 ? children[child_name] : nullptr;
+		}
+
+		void find_all(const std::string& pattern, std::vector<std::string>& results)
+		{
+			std::regex regex_pattern(convert_to_regex(pattern));
+
+			for (const auto& [_, child] : children)
+			{
+				if (std::regex_match(child->get_name(), regex_pattern))
+					results.push_back(child->get_path());
+
+				if (auto dir = dynamic_cast<Directory*>(child.get()))
+					dir->find_all(pattern, results);
+			}
+		}
+
+		std::string convert_to_regex(const std::string& pattern)
+		{
+			std::string regex = "^";
+
+			bool asterisk_is_used = false;
+
+			for (char c : pattern)
+			{
+				if (c == '*')
+				{
+					if (!asterisk_is_used)
+					{
+						regex += ".*";
+
+						asterisk_is_used = true;
+					}
+				}
+				else if (c == '?')
+					regex += '.';
+				else if (c == '|')
+					regex += '|';
+				else
+				{
+					regex += c;
+
+					asterisk_is_used = false;
+				}
+			}
+
+			regex += "$";
+
+			return regex;
+		}
+
+		int count_objects(const std::string& name_pattern, const std::string& type = "")
+		{
+			int count = 0;
+
+			std::regex regex_pattern(convert_to_regex(name_pattern));
+
+			for (const auto& [_, child] : children)
+			{
+				bool name_match = std::regex_match(child->get_name(), regex_pattern);
+				bool type_match = type.empty() ||
+                                  (type == "file" && dynamic_cast<File*>(child.get())) ||
+                                  (type == "directory" && dynamic_cast<Directory*>(child.get()));
+
+                if (name_match && type_match)
+					count++;
+			}
+
+			return count;
 		}
 
 		std::string get_name() const override { return name; }
 
-		void add_object(FileSystemObject* obj)
+		std::string get_path() const override
 		{
-			if (objects_length == objects_capacity)
-				resize();
-
-			objects[objects_length++] = obj;
+			return parent ? parent->get_path() + "/" + name : name;
 		}
 
-		void remove_object(const std::string& object_name)
-		{
-			for (int i = 0; i < objects_length; i++)
-			{
-				if (objects[i]->get_name() == object_name)
-				{
-					delete objects[i];
-
-					for (int j = i; j < objects_length - 1; j++)
-						objects[j] = objects[j + 1];
-
-					objects_length--;
-					
-					return;
-				}
-			}
-			
-			throw std::runtime_error("Объект не найден: " + object_name);
-		}
-
-		FileSystemObject** get_objects() const { return objects; }
-
-		int get_objects_length() const { return objects_length; }
+		void set_name(const std::string& new_name) { name = new_name; }
 
 		Directory* get_parent() const { return parent; }
+
+		const std::map<std::string, std::shared_ptr<FileSystemObject>>& get_children() const { return children; }
 };
 
 #endif

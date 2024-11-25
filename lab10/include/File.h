@@ -7,10 +7,18 @@ class File : public FileSystemObject
 {
 	private:
 		std::string name;
+		std::string description;
 
 	public:
-		explicit File(const std::string& n) : name(n) {}
+		File(const std::string& n, const std::string& d) : name(n), description(d) {}
+
+		void set_name(const std::string& new_name) { name = new_name; }
+
 		std::string get_name() const override { return name; }
+
+		std::string get_path() const override { return name; }
+
+		std::string get_description() const { return description; }
 };
 
 #endif

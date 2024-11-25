@@ -6,8 +6,11 @@
 class FileSystemObject
 {
 	public:
-		virtual std::string get_name() const = 0;
 		virtual ~FileSystemObject() = default;
+		
+		virtual std::string get_name() const = 0;
+		
+		virtual std::string get_path() const = 0;
 };
 
 #endif
