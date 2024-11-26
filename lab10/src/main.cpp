@@ -1,5 +1,11 @@
 #include "../include/FileSystem.h"
 
+/*
+ * Цикл возможных комманд для файловой системы
+ *
+ * @param fs файловая система
+ */
+
 void commandLoop(FileSystem& fs)
 {
 	std::cout << "\tВведите " << Colors::yellow << "команду" << Colors::reset << ", чтобы начать. " << std::endl << "\tНапишите " << Colors::green << "'help'" << Colors::reset << ", чтобы увидеть список возможных команд." << std::endl;
@@ -178,8 +184,8 @@ void commandLoop(FileSystem& fs)
 
 int main() {
     FileSystem fs;
-    std::thread inputThread(commandLoop, std::ref(fs));
-    inputThread.join();
+    std::thread input_thread(commandLoop, std::ref(fs));
+    input_thread.join();
 
     return 0;
 }

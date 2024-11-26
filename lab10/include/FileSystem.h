@@ -18,12 +18,26 @@ class FileSystem
 		std::atomic<bool> running;
 
 	public:
+		/*
+		 * Конструктор класса файловой системы
+		 *
+		 * @param root корневая папка
+		 * @param current_directory текущая папка
+		 * @param running флаг запуска потока
+		 */
+
 		FileSystem()
 		{
 			root = std::make_unique<Directory>("root");
 			current_directory = root.get();
 			running = true;
 		}
+
+		/*
+		 * Создание папки
+		 *
+		 * @param name название папки
+		 */
 
 		void create_dir(const std::string& name)
 		{
@@ -35,6 +49,13 @@ class FileSystem
 			current_directory->add_child(std::make_shared<Directory>(name, current_directory));
 		}
 
+		/*
+		 * Создание файла
+		 *
+		 * @param name название файла
+		 * @param description описание файла
+		 */
+
 		void create_file(const std::string& name, const std::string& description)
 		{
 			std::lock_guard<std::mutex> guard(fs_mutex);
@@ -44,6 +65,12 @@ class FileSystem
 
 			current_directory->add_child(std::make_shared<File>(name, description));
 		}
+
+		/*
+		 * Удаление объекта
+		 *
+		 * @param name название объекта
+		 */
 
 		void delete_object(const std::string& name)
 		{
@@ -61,6 +88,13 @@ class FileSystem
 			else
 				throw std::runtime_error("Объект не найден.");
 		}
+
+		/*
+		 * Переименование объекта
+		 *
+		 * @param old_name старое название объекта
+		 * @param new_name новое название объекта
+		 */
 
 		void rename_object(const std::string& old_name, const std::string& new_name)
 		{
@@ -81,6 +115,12 @@ class FileSystem
 			}
 		}
 
+		/*
+		 * Изменение местоположения пользователя в текущей папке
+		 *
+		 * @param name название папки
+		 */
+
 		void change_dir(const std::string& name)
 		{
 			std::lock_guard<std::mutex> guard(fs_mutex);
@@ -99,6 +139,13 @@ class FileSystem
 					throw std::runtime_error("Папка не найдена.");
 			}
 		}
+
+		/*
+		 * Перемещение объекта в другую директорию
+		 *
+		 * @param object_name название объекта
+		 * @param target_directory_name название целевой папки
+		 */
 
 		void move(const std::string& object_name, const std::string& target_directory_name)
 		{
@@ -119,6 +166,13 @@ class FileSystem
 
 			move_object(object_name, target_directory);
 		}
+
+		/*
+		 * Перемещение объекта в другую диреторию
+		 *
+		 * @param object_name название объекта
+		 * @param target_directory целевая папка
+		 */
 
 		void move_object(const std::string& object_name, Directory* target_directory)
 		{
@@ -153,6 +207,12 @@ class FileSystem
 			}
 		}
 
+		/*
+		 * Просмотр дерева объектов из определенной папки
+		 *
+		 * @param directory_name название папки
+		 */
+
 		void show_tree(const std::string& directory_name)
 		{
 			Directory* target_directory = find_directory(directory_name, root.get());
@@ -161,6 +221,13 @@ class FileSystem
 			else
 				std::cerr << Colors::red << "Директория не найдена." << Colors::reset << std::endl;
 		}
+
+		/*
+		 * Поиск папки
+		 *
+		 * @param name название папки
+		 * @param current текущая папка 
+		 */
 
 		Directory* find_directory(const std::string& name, Directory* current)
 		{
@@ -181,12 +248,23 @@ class FileSystem
 			return nullptr;
 		}
 
+		/*
+		 * Просмотр дерева объектов из текущей директории
+		 *
+		 */
+		 
 		void show_current_tree()
 		{
 			std::lock_guard<std::mutex> guard(fs_mutex);
 
 			current_directory->show_tree();
 		}
+
+		/*
+		 * Поиск объектов
+		 *
+		 * @param name название объекта
+		 */
 
 		void find_objects(const std::string& name)
 		{
@@ -204,12 +282,24 @@ class FileSystem
 			}
 		}
 
+		/*
+		 * Подсчёт количества объектов
+		 *
+		 * @param name_pattern шаблон, по которому нужно искать объект
+		 * @param type тип объекта (файл, или папка, или что угодно по умолчанию)
+		 */
+
 		void count_objects(const std::string& name_pattern, const std::string& type = "")
 		{
 			int amount_of_objects = current_directory->count_objects(name_pattern, type);
 
 			std::cout << Colors::red << "Найдено " << Colors::green << amount_of_objects << Colors::red << " удовлетворяющих объектов." << Colors::reset << std::endl;
 		}
+
+		/*
+		 * Помощь, отображающая все возможнные команды для работы
+		 *
+		 */
 
 		void help()
 		{
@@ -226,10 +316,21 @@ class FileSystem
                       << Colors::yellow << "\t\texit" << Colors::reset << "\t\t\t" << "выход." << std::endl;
 		}
 
+		/*
+		 * Остановка работы потока
+		 *
+		 */
+
 		void stop()
 		{
 			running = false;
 		}
+
+		/*
+		 * Получение флага состояния потока
+		 *
+		 * @return возвращает true, если поток работает, иначе - false
+		 */
 
 		bool is_running() const
 		{
